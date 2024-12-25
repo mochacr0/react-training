@@ -147,7 +147,7 @@ const Header = () => {
                                         <div className="flex-shrink-0">
                                             <img
                                                 className="h-11 w-11 rounded-full"
-                                                src="http://localhost:1313/images/users/bonnie-green.png"
+                                                src="http://localhost:3000/images/users/bonnie-green.png"
                                                 alt="Jese"
                                             />
                                             <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-primary-700 dark:border-gray-700">
@@ -182,7 +182,7 @@ const Header = () => {
                                         <div className="flex-shrink-0">
                                             <img
                                                 className="h-11 w-11 rounded-full"
-                                                src="http://localhost:1313/images/users/jese-leos.png"
+                                                src="http://localhost:3000/images/users/jese-leos.png"
                                                 alt="Jese"
                                             />
                                             <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-gray-900 dark:border-gray-700">
@@ -219,7 +219,7 @@ const Header = () => {
                                         <div className="flex-shrink-0">
                                             <img
                                                 className="h-11 w-11 rounded-full"
-                                                src="http://localhost:1313/images/users/joseph-mcfall.png"
+                                                src="http://localhost:3000/images/users/joseph-mcfall.png"
                                                 alt="Joseph"
                                             />
                                             <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-red-600 dark:border-gray-700">
@@ -260,7 +260,7 @@ const Header = () => {
                                         <div className="flex-shrink-0">
                                             <img
                                                 className="h-11 w-11 rounded-full"
-                                                src="http://localhost:1313/images/users/leslie-livingston.png"
+                                                src="http://localhost:3000/images/users/leslie-livingston.png"
                                                 alt="Leslie"
                                             />
                                             <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-green-400 dark:border-gray-700">
@@ -298,7 +298,7 @@ const Header = () => {
                                         <div className="flex-shrink-0">
                                             <img
                                                 className="h-11 w-11 rounded-full"
-                                                src="http://localhost:1313/images/users/robert-brown.png"
+                                                src="http://localhost:3000/images/users/robert-brown.png"
                                                 alt="Robert"
                                             />
                                             <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-purple-500 dark:border-gray-700">

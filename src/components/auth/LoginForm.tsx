@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { useFormValidationUtils } from "../../shared/hooks/useFormValidationUtils";
 import { findUserByEmail } from "../../shared/data/users";
 import { useCurrentUserContext } from "../../shared/CurrentUserProvider";
+import { shouldDisableButton } from "../../shared/utils";
 
 type LoginFormValues = {
     email: string;
@@ -67,6 +68,7 @@ const LoginForm = () => {
                     color={getErrorFieldColor("email")}
                     value={formik.values.email}
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     helperText={getErrorFieldMessage("email")}
                     disabled={isSubmitting}
                 />
@@ -83,6 +85,7 @@ const LoginForm = () => {
                     color={getErrorFieldColor("password")}
                     value={formik.values.password}
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     helperText={getErrorFieldMessage("password")}
                     disabled={isSubmitting}
                 />
@@ -113,7 +116,7 @@ const LoginForm = () => {
                 size="lg"
                 color="blue"
                 type="submit"
-                disabled={!formik.dirty || isSubmitting}
+                disabled={shouldDisableButton(formik, isSubmitting)}
                 isProcessing={isSubmitting}
             >
                 Login to my account

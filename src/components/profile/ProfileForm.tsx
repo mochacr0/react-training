@@ -1,235 +1,114 @@
+import { Button } from "flowbite-react";
+import { Form, Formik, FormikHelpers } from "formik";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
+import { PersonalInformationFormValues } from "../../models/profile.model";
+import { shouldDisableButton } from "../../shared/utils";
+import BasicInformationSection from "./BasicInformationSection";
+import ContactInformationSection from "./ContactInformationSection";
+
+const initialFormValues: PersonalInformationFormValues = {
+    contactInformation: {
+        addresses: [],
+        emails: [],
+        phones: [],
+    },
+    basicInformation: {
+        firstName: "",
+        lastName: "",
+        middleName: "",
+        dateOfBirth: "",
+        age: "",
+    },
+};
+
+const basicInformationSchema = Yup.object().shape({
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    dateOfBirth: Yup.string().required("Date of birth is required"),
+});
+
+const contactAddressSchema = Yup.object().shape({
+    country: Yup.string().required("Country is required"),
+    city: Yup.string().required("City is required"),
+    street: Yup.string().required("Street is required"),
+    postalCode: Yup.string(),
+    type: Yup.string().required("Type is required"),
+});
+
+const contactEmailSchema = Yup.object().shape({
+    address: Yup.string().email("Email address is invalid").required("Email address is required"),
+    type: Yup.string().required("Type is required"),
+    isPreferred: Yup.string().required("Preferred is required"),
+});
+
+const contactPhoneSchema = Yup.object().shape({
+    number: Yup.string().required("Phone number is required"),
+    type: Yup.string().required("Type is required"),
+    isPreferred: Yup.string().required("Preferred is required"),
+});
+
+const contactInformationSchema = Yup.object().shape({
+    addresses: Yup.array().of(contactAddressSchema),
+    emails: Yup.array().of(contactEmailSchema),
+    phones: Yup.array().of(contactPhoneSchema),
+});
+
+const personalInformationSchema = Yup.object().shape({
+    contactInformation: contactInformationSchema,
+    basicInformation: basicInformationSchema,
+});
+
 const ProfileForm = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    function handleSubmit(
+        values: PersonalInformationFormValues,
+        formikHelpers: FormikHelpers<PersonalInformationFormValues>,
+    ) {
+        setIsSubmitting(true);
+        setTimeout(() => {
+            try {
+                console.log(values);
+                toast.success("Profile updated successfully");
+            } finally {
+                // formikHelpers.resetForm();
+                setIsSubmitting(false);
+            }
+        }, 1500);
+    }
+
     return (
         <div className="mx-4 my-6 max-w-5xl rounded-lg bg-white p-6 shadow-md">
             <h2 className="text-center text-2xl font-bold text-primary-900">Personal Information</h2>
-            <form className="mt-6 space-y-6">
-                <div className="panel rounded-md border p-4">
-                    <h3 className="mb-4 text-lg font-medium text-primary-900">Basic Information</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label htmlFor="first-name" className="block text-sm font-medium">
-                                First Name
-                            </label>
-                            <input
-                                type="text"
-                                id="first-name"
-                                className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                placeholder="Enter your first name"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="last-name" className="block text-sm font-medium">
-                                Last Name
-                            </label>
-                            <input
-                                type="text"
-                                id="last-name"
-                                className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                placeholder="Enter your last name"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="middle-name" className="block text-sm font-medium">
-                                Middle Name
-                            </label>
-                            <input
-                                type="text"
-                                id="middle-name"
-                                className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                placeholder="Enter your middle name"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="dob" className="block text-sm font-medium">
-                                Date of Birth
-                            </label>
-                            <input
-                                type="date"
-                                id="dob"
-                                className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="age" className="block text-sm font-medium">
-                                Age
-                            </label>
-                            <input
-                                type="number"
-                                id="age"
-                                className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                placeholder="Enter your age"
-                                required
-                            />
-                        </div>
-                    </div>
-                </div>
+            <Formik
+                initialValues={initialFormValues}
+                validationSchema={personalInformationSchema}
+                onSubmit={handleSubmit}
+            >
+                {(formik) => {
+                    return (
+                        <Form noValidate className="mt-6 space-y-6">
+                            <BasicInformationSection formik={formik} />
+                            <ContactInformationSection formik={formik} />
 
-                <div className="panel rounded-md border p-4">
-                    <h3 className="mb-4 text-lg font-medium text-primary-900">Contact Information</h3>
-
-                    <div className="panel mb-6">
-                        <h4 className="text-md mb-4 font-semibold">Addresses</h4>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label htmlFor="country" className="block text-sm font-medium">
-                                    Country
-                                </label>
-                                <input
-                                    type="text"
-                                    id="country"
-                                    className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                    placeholder="Enter country"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="city" className="block text-sm font-medium">
-                                    City
-                                </label>
-                                <input
-                                    type="text"
-                                    id="city"
-                                    className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                    placeholder="Enter city"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="street" className="block text-sm font-medium">
-                                    Street
-                                </label>
-                                <input
-                                    type="text"
-                                    id="street"
-                                    className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                    placeholder="Enter street"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="postal-code" className="block text-sm font-medium">
-                                    Postal Code
-                                </label>
-                                <input
-                                    type="text"
-                                    id="postal-code"
-                                    className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                    placeholder="Enter postal code"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="address-type" className="block text-sm font-medium">
-                                    Type
-                                </label>
-                                <select
-                                    id="address-type"
-                                    className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
+                            <div className="flex justify-end">
+                                <Button
+                                    type="submit"
+                                    className="btn-primary rounded-md px-4 py-2"
+                                    isProcessing={isSubmitting}
+                                    disabled={shouldDisableButton(formik, isSubmitting)}
                                 >
-                                    <option value="mailing">Mailing</option>
-                                    <option value="work">Work</option>
-                                </select>
+                                    Submit
+                                </Button>
                             </div>
-                        </div>
-                        <button type="button" className="btn-primary mt-4 rounded-md px-4 py-2">
-                            Add Address
-                        </button>
-                    </div>
-
-                    <div className="panel mb-6">
-                        <h4 className="text-md mb-4 font-semibold">Emails</h4>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label htmlFor="email-address" className="block text-sm font-medium">
-                                    Email Address
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email-address"
-                                    className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                    placeholder="Enter email address"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="email-type" className="block text-sm font-medium">
-                                    Type
-                                </label>
-                                <select
-                                    id="email-type"
-                                    className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                >
-                                    <option value="personal">Personal</option>
-                                    <option value="work">Work</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label htmlFor="email-preferred" className="block text-sm font-medium">
-                                    Preferred
-                                </label>
-                                <select
-                                    id="email-preferred"
-                                    className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                >
-                                    <option value="yes">Yes</option>
-                                    <option value="no">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="button" className="btn-primary mt-4 rounded-md px-4 py-2">
-                            Add Email
-                        </button>
-                    </div>
-
-                    <div className="panel mb-6">
-                        <h4 className="text-md mb-4 font-semibold">Phones</h4>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label htmlFor="phone-number" className="block text-sm font-medium">
-                                    Phone Number
-                                </label>
-                                <input
-                                    type="tel"
-                                    id="phone-number"
-                                    className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                    placeholder="Enter phone number"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="phone-type" className="block text-sm font-medium">
-                                    Type
-                                </label>
-                                <select
-                                    id="phone-type"
-                                    className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                >
-                                    <option value="personal">Personal</option>
-                                    <option value="work">Work</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label htmlFor="phone-preferred" className="block text-sm font-medium">
-                                    Preferred
-                                </label>
-                                <select
-                                    id="phone-preferred"
-                                    className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                >
-                                    <option value="yes">Yes</option>
-                                    <option value="no">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="button" className="btn-primary mt-4 rounded-md px-4 py-2">
-                            Add Phone
-                        </button>
-                    </div>
-                </div>
-
-                <div className="panel mb-6">
+                        </Form>
+                    );
+                }}
+            </Formik>
+            <form className="mt-6 space-y-6" noValidate>
+                {/* <div className="panel mb-6">
                     <h3 className="mb-4 text-lg font-medium text-primary-900">Identification Documents</h3>
                     <div className="grid grid-cols-3 gap-4">
                         <div>
@@ -317,13 +196,13 @@ const ProfileForm = () => {
                     <button type="button" className="btn-primary mt-4 rounded-md px-4 py-2">
                         Add Occupation
                     </button>
-                </div>
+                </div> */}
 
-                <div className="text-right">
+                {/* <div className="text-right">
                     <button type="submit" className="btn-primary rounded-md px-6 py-3">
                         Submit
                     </button>
-                </div>
+                </div> */}
             </form>
         </div>
     );
