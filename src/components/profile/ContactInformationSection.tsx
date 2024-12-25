@@ -12,9 +12,11 @@ const ContactInformationSection = ({ formik }: ContactInformationSectionProps) =
     return (
         <div className="panel rounded-md border p-4">
             <h3 className="mb-4 text-lg font-medium text-primary-900">Contact Information</h3>
-            <ContactAddressPanel formik={formik} />
-            <ContactEmailPanel formik={formik} />
-            <ContactPhonePanel formik={formik} />
+            <div className="space-y-4">
+                <ContactAddressPanel formik={formik} />
+                <ContactEmailPanel formik={formik} />
+                <ContactPhonePanel formik={formik} />
+            </div>
         </div>
     );
 };

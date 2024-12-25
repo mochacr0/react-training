@@ -7,6 +7,9 @@ import { PersonalInformationFormValues } from "../../models/profile.model";
 import { shouldDisableButton } from "../../shared/utils";
 import BasicInformationSection from "./BasicInformationSection";
 import ContactInformationSection from "./ContactInformationSection";
+import IdentificationDocumentSections from "./IdentificationDocumentSection";
+import OccupationSection from "./OccupationSection";
+import dayjs from "dayjs";
 
 const initialFormValues: PersonalInformationFormValues = {
     contactInformation: {
@@ -21,6 +24,14 @@ const initialFormValues: PersonalInformationFormValues = {
         dateOfBirth: "",
         age: "",
     },
+    identificationDocuments: [
+        {
+            type: "passport",
+            expiryDate: "",
+            file: null,
+        },
+    ],
+    occupations: [],
 };
 
 const basicInformationSchema = Yup.object().shape({
@@ -55,9 +66,42 @@ const contactInformationSchema = Yup.object().shape({
     phones: Yup.array().of(contactPhoneSchema),
 });
 
+const identificationDocumentsSchema = Yup.array()
+    .of(
+        Yup.object().shape({
+            type: Yup.string().required("Type is required"),
+            expiryDate: Yup.string().required("Expiry date is required"),
+            file: Yup.mixed().required("File is required"),
+        }),
+    )
+    .min(1, "At least one identification document is required");
+
+const occupationSchema = Yup.array().of(
+    Yup.object().shape({
+        title: Yup.string().required("Occupation is required"),
+        fromDate: Yup.string().required("From date is required"),
+        toDate: Yup.string().test(
+            "fromDateIsBeforeToDate",
+            "To date must be greater than from date",
+            function (value, context) {
+                if (value && context.parent.fromDate) {
+                    const fromDate = dayjs(context.parent.fromDate);
+                    const toDate = dayjs(value);
+                    if (toDate.isBefore(fromDate)) {
+                        return false;
+                    }
+                }
+                return true;
+            },
+        ),
+    }),
+);
+
 const personalInformationSchema = Yup.object().shape({
     contactInformation: contactInformationSchema,
     basicInformation: basicInformationSchema,
+    identificationDocuments: identificationDocumentsSchema,
+    occupations: occupationSchema,
 });
 
 const ProfileForm = () => {
@@ -92,7 +136,8 @@ const ProfileForm = () => {
                         <Form noValidate className="mt-6 space-y-6">
                             <BasicInformationSection formik={formik} />
                             <ContactInformationSection formik={formik} />
-
+                            <IdentificationDocumentSections formik={formik} />
+                            <OccupationSection formik={formik} />
                             <div className="flex justify-end">
                                 <Button
                                     type="submit"
@@ -108,49 +153,7 @@ const ProfileForm = () => {
                 }}
             </Formik>
             <form className="mt-6 space-y-6" noValidate>
-                {/* <div className="panel mb-6">
-                    <h3 className="mb-4 text-lg font-medium text-primary-900">Identification Documents</h3>
-                    <div className="grid grid-cols-3 gap-4">
-                        <div>
-                            <label htmlFor="id-type" className="block text-sm font-medium">
-                                Type
-                            </label>
-                            <select
-                                id="id-type"
-                                className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                required
-                            >
-                                <option value="national-id">National ID Card</option>
-                                <option value="driver-license">Driver License</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label htmlFor="id-expired" className="block text-sm font-medium">
-                                Expiry Date
-                            </label>
-                            <input
-                                type="date"
-                                id="id-expired"
-                                className="focus:ring-secondary-color mt-2 w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="id-file" className="block text-sm font-medium">
-                                Upload Document
-                            </label>
-                            <input
-                                type="file"
-                                id="id-file"
-                                className="focus:ring-secondary-color mt-2 w-full rounded-md border focus:outline-none focus:ring-2"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <button type="button" className="btn-primary mt-4 rounded-md px-4 py-2">
-                        Add Identification Document
-                    </button>
-                </div>
+                {/* 
 
                 <div className="panel mb-6">
                     <h3 className="mb-4 text-lg font-medium text-primary-900">Occupations</h3>

@@ -1,13 +1,13 @@
 import { FieldArray, FormikProps } from "formik";
 import { PersonalInformationFormValues } from "../../models/profile.model";
-import { Select, TextInput } from "flowbite-react";
+import { Button, Select, TextInput } from "flowbite-react";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 
 type ContactPhonePanelProps = { formik: FormikProps<PersonalInformationFormValues> };
 
 const ContactPhonePanel = ({ formik }: ContactPhonePanelProps) => {
     return (
-        <div className="panel mb-6">
+        <div className="panel">
             <h4 className="text-md mb-4 font-semibold">Phones</h4>
             <FieldArray
                 name="contactInformation.phones"
@@ -50,7 +50,7 @@ const ContactPhonePanel = ({ formik }: ContactPhonePanelProps) => {
                                                     htmlFor={`contactInformation.phones.${index}.number`}
                                                     className="block text-sm font-medium"
                                                 >
-                                                    Phone Number
+                                                    Phone Number *
                                                 </label>
                                                 <TextInput
                                                     type="text"
@@ -73,7 +73,7 @@ const ContactPhonePanel = ({ formik }: ContactPhonePanelProps) => {
                                                     htmlFor={`contactInformation.phones.${index}.type`}
                                                     className="block text-sm font-medium"
                                                 >
-                                                    Type
+                                                    Type *
                                                 </label>
                                                 <Select
                                                     className="mt-2"
@@ -96,7 +96,7 @@ const ContactPhonePanel = ({ formik }: ContactPhonePanelProps) => {
                                                     htmlFor={`contactInformation.phones.${index}.isPreferred`}
                                                     className="block text-sm font-medium"
                                                 >
-                                                    Preferred
+                                                    Preferred *
                                                 </label>
                                                 <Select
                                                     className="mt-2"
@@ -118,9 +118,8 @@ const ContactPhonePanel = ({ formik }: ContactPhonePanelProps) => {
                                     </fieldset>
                                 );
                             })}
-                            <button
-                                type="button"
-                                className="btn-primary rounded-md px-4 py-2"
+                            <Button
+                                className="btn-primary rounded-md"
                                 onClick={() => {
                                     arrayHelpers.push({
                                         number: "",
@@ -130,7 +129,7 @@ const ContactPhonePanel = ({ formik }: ContactPhonePanelProps) => {
                                 }}
                             >
                                 Add Phone
-                            </button>
+                            </Button>
                         </>
                     );
                 }}

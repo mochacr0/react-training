@@ -1,4 +1,4 @@
-import { Select, TextInput } from "flowbite-react";
+import { Button, Select, TextInput } from "flowbite-react";
 import { FieldArray, FormikProps } from "formik";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 import { PersonalInformationFormValues } from "../../models/profile.model";
@@ -9,7 +9,7 @@ type ContactAddressPanelProps = {
 
 const ContactAddressPanel = ({ formik }: ContactAddressPanelProps) => {
     return (
-        <div className="panel mb-6">
+        <div className="panel">
             <h4 className="text-md mb-4 font-semibold">Addresses</h4>
             <FieldArray
                 name="contactInformation.addresses"
@@ -165,9 +165,8 @@ const ContactAddressPanel = ({ formik }: ContactAddressPanelProps) => {
                                     </fieldset>
                                 );
                             })}
-                            <button
-                                type="button"
-                                className="btn-primary rounded-md px-4 py-2"
+                            <Button
+                                className="btn-primary rounded-md"
                                 onClick={() => {
                                     arrayHelpers.push({
                                         country: "",
@@ -179,7 +178,7 @@ const ContactAddressPanel = ({ formik }: ContactAddressPanelProps) => {
                                 }}
                             >
                                 Add Address
-                            </button>
+                            </Button>
                         </>
                     );
                 }}

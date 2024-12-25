@@ -3,6 +3,7 @@ import { TextInput } from "flowbite-react";
 import { FormikProps } from "formik";
 import { PersonalInformationFormValues } from "../../models/profile.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
+import { toast } from "react-toastify";
 
 type BasicInformationSectionProps = {
     formik: FormikProps<PersonalInformationFormValues>;

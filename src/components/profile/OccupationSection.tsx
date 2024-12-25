@@ -3,27 +3,27 @@ import { PersonalInformationFormValues } from "../../models/profile.model";
 import { Button, Select, TextInput } from "flowbite-react";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 
-type ContactEmailPanelProps = {
+type OccupationSectionProps = {
     formik: FormikProps<PersonalInformationFormValues>;
 };
 
-const ContactEmailPanel = ({ formik }: ContactEmailPanelProps) => {
+const OccupationSection = ({ formik }: OccupationSectionProps) => {
     return (
-        <div className="panel">
-            <h4 className="text-md mb-4 font-semibold">Emails</h4>
+        <div className="panel mb-6">
+            <h4 className="mb-4 text-lg font-medium text-primary-900">Occupations</h4>
             <FieldArray
-                name="contactInformation.emails"
+                name="occupations"
                 render={(arrayHelpers) => {
                     return (
                         <>
-                            {formik.values.contactInformation.emails.map((email, index) => {
+                            {formik.values.occupations.map((occupation, index) => {
                                 return (
                                     <fieldset
                                         key={index + 1}
                                         className="relative mb-6 rounded-lg border border-gray-200 p-6 shadow-md"
                                     >
                                         <legend className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-1 text-sm font-medium">
-                                            {`Phone #${index + 1}`}
+                                            {`Occupation #${index + 1}`}
                                             <button
                                                 type="button"
                                                 onClick={() => {
@@ -46,75 +46,78 @@ const ContactEmailPanel = ({ formik }: ContactEmailPanelProps) => {
                                                 </svg>
                                             </button>
                                         </legend>
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-3 gap-4">
                                             <div>
                                                 <label
-                                                    htmlFor={`contactInformation.emails.${index}.address`}
+                                                    htmlFor={`occupations.${index}.title`}
                                                     className="block text-sm font-medium"
                                                 >
-                                                    Email Address *
+                                                    Occupation *
                                                 </label>
-                                                <TextInput
-                                                    type="email"
+                                                <Select
                                                     className="mt-2"
-                                                    id={`contactInformation.emails.${index}.address`}
-                                                    name={`contactInformation.emails.${index}.address`}
-                                                    placeholder="Enter email address"
                                                     required
-                                                    value={email.address}
+                                                    id={`occupations.${index}.title`}
+                                                    name={`occupations.${index}.title`}
+                                                    value={occupation.title}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
-                                                    {...getValidationProps(
-                                                        `contactInformation.emails.${index}.address`,
-                                                        formik,
-                                                    )}
+                                                    {...getValidationProps(`occupations.${index}.title`, formik)}
+                                                >
+                                                    <option value="unemployed">Unemployed</option>
+                                                    <option value="engineer">Engineer</option>
+                                                    <option value="teacher">Teacher</option>
+                                                    <option value="doctor">Doctor</option>
+                                                    <option value="others">Others</option>
+                                                </Select>
+                                            </div>
+                                            <div>
+                                                <label
+                                                    htmlFor={`occupations.${index}.fromDate`}
+                                                    className="block text-sm font-medium"
+                                                >
+                                                    From Date *
+                                                </label>
+                                                <TextInput
+                                                    type="date"
+                                                    className="mt-2"
+                                                    required
+                                                    id={`occupations.${index}.fromDate`}
+                                                    name={`occupations.${index}.fromDate`}
+                                                    value={occupation.fromDate}
+                                                    onChange={(event) => {
+                                                        formik.setFieldValue(
+                                                            `occupations.${index}.fromDate`,
+                                                            event.target.value,
+                                                        );
+                                                    }}
+                                                    onBlur={formik.handleBlur}
+                                                    {...getValidationProps(`occupations.${index}.fromDate`, formik)}
                                                 />
                                             </div>
                                             <div>
                                                 <label
-                                                    htmlFor={`contactInformation.emails.${index}.type`}
+                                                    htmlFor={`occupations.${index}.toDate`}
                                                     className="block text-sm font-medium"
                                                 >
-                                                    Type *
+                                                    To Date
                                                 </label>
-                                                <Select
+                                                <TextInput
+                                                    type="date"
                                                     className="mt-2"
-                                                    id={`contactInformation.emails.${index}.type`}
-                                                    name={`contactInformation.emails.${index}.type`}
-                                                    value={email.type}
-                                                    onChange={formik.handleChange}
+                                                    required
+                                                    id={`occupations.${index}.toDate`}
+                                                    name={`occupations.${index}.toDate`}
+                                                    value={occupation.toDate}
+                                                    onChange={(event) => {
+                                                        formik.setFieldValue(
+                                                            `occupations.${index}.toDate`,
+                                                            event.target.value,
+                                                        );
+                                                    }}
                                                     onBlur={formik.handleBlur}
-                                                    {...getValidationProps(
-                                                        `contactInformation.emails.${index}.type`,
-                                                        formik,
-                                                    )}
-                                                >
-                                                    <option value="personal">Personal</option>
-                                                    <option value="work">Work</option>
-                                                </Select>
-                                            </div>
-                                            <div>
-                                                <label
-                                                    htmlFor={`contactInformation.emails.${index}.isPreferred`}
-                                                    className="block text-sm font-medium"
-                                                >
-                                                    Preferred *
-                                                </label>
-                                                <Select
-                                                    className="mt-2"
-                                                    id={`contactInformation.emails.${index}.isPreferred`}
-                                                    name={`contactInformation.emails.${index}.isPreferred`}
-                                                    value={email.isPreferred}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
-                                                    {...getValidationProps(
-                                                        `contactInformation.emails.${index}.isPreferred`,
-                                                        formik,
-                                                    )}
-                                                >
-                                                    <option value="yes">Yes</option>
-                                                    <option value="no">No</option>
-                                                </Select>
+                                                    {...getValidationProps(`occupations.${index}.toDate`, formik)}
+                                                />
                                             </div>
                                         </div>
                                     </fieldset>
@@ -124,13 +127,13 @@ const ContactEmailPanel = ({ formik }: ContactEmailPanelProps) => {
                                 className="btn-primary rounded-md"
                                 onClick={() => {
                                     arrayHelpers.push({
-                                        address: "",
-                                        type: "personal",
-                                        isPreferred: "no",
+                                        title: "unemployed",
+                                        fromDate: "",
+                                        toDate: "",
                                     });
                                 }}
                             >
-                                Add Email
+                                Add Occupation
                             </Button>
                         </>
                     );
@@ -140,4 +143,4 @@ const ContactEmailPanel = ({ formik }: ContactEmailPanelProps) => {
     );
 };
 
-export default ContactEmailPanel;
+export default OccupationSection;
