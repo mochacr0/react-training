@@ -17,12 +17,6 @@ export function useFormValidationUtils<FormValues>(formik: FormikProps<FormValue
 }
 
 export function getValidationProps<FormValues>(fieldPath: string, formik: FormikProps<FormValues>) {
-    const getNestedValue = (obj: any, fieldPath: string) => {
-        return fieldPath
-            .split(".")
-            .reduce((currentObjectAccessor, currentPathSegment) => currentObjectAccessor?.[currentPathSegment], obj);
-    };
-
     const error = getNestedValue(formik.errors, fieldPath);
     const isTouched = getNestedValue(formik.touched, fieldPath);
 
@@ -30,4 +24,10 @@ export function getValidationProps<FormValues>(fieldPath: string, formik: Formik
         color: error && isTouched ? "failure" : "blue",
         helperText: error && isTouched ? error : undefined,
     };
+}
+
+function getNestedValue(obj: any, fieldPath: string) {
+    return fieldPath
+        .split(".")
+        .reduce((currentObjectAccessor, currentPathSegment) => currentObjectAccessor?.[currentPathSegment], obj);
 }

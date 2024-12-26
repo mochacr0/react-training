@@ -9,3 +9,7 @@ export function shouldDisableButton<FormValues>(formik: FormikProps<FormValues>,
     const hasErrors = !isEmptyObject(formik.errors);
     return hasErrors || isSubmitting;
 }
+
+export function capitalize(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}

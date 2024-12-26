@@ -6,24 +6,39 @@ export type BasicInfomation = {
     age: string;
 };
 
+export enum ContactAddressType {
+    MAILING = "Mailing",
+    WORK = "Work",
+}
+
 export type ContactAddress = {
     country: string;
     city: string;
     street: string;
     postalCode?: string;
-    type: string;
+    type: ContactAddressType;
 };
 
 export type ContactEmail = {
     address: string;
-    type: "personal" | "work";
-    isPreferred: "yes" | "no";
+    type: ContactPurposeType;
+    isPreferred: PreferContactOption;
 };
+
+export enum ContactPurposeType {
+    PERSONAL = "Personal",
+    WORK = "Work",
+}
+
+export enum PreferContactOption {
+    YES = "Yes",
+    NO = "No",
+}
 
 export type ContactPhone = {
     number: string;
-    type: "personal" | "work";
-    isPreferred: "yes" | "no";
+    type: ContactPurposeType;
+    isPreferred: PreferContactOption;
 };
 
 export type ContactInformation = {
@@ -32,14 +47,28 @@ export type ContactInformation = {
     phones: ContactPhone[];
 };
 
+export enum IdentificationDocumentType {
+    PASSPORT = "Passport",
+    NATIONAL_ID = "National ID Card",
+    DRIVER_LICENSE = "Driver License",
+}
+
 export type IdentificationDocument = {
-    type: "passport" | "national-id" | "driver-license";
+    type: IdentificationDocumentType;
     expiryDate: string;
     file: File | null;
 };
 
+export enum OccupationTitle {
+    UNEMPLOYED = "Unemployed",
+    ENGINEER = "Engineer",
+    TEACHER = "Teacher",
+    DOCTOR = "Doctor",
+    OTHERS = "Others",
+}
+
 export type Occupation = {
-    title: "unemployed" | "engineer" | "teacher" | "doctor" | "others";
+    title: OccupationTitle;
     fromDate: string;
     toDate: string;
 };

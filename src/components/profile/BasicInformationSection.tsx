@@ -1,15 +1,12 @@
 import dayjs from "dayjs";
 import { TextInput } from "flowbite-react";
-import { FormikProps } from "formik";
+import { useFormikContext } from "formik";
 import { PersonalInformationFormValues } from "../../models/profile.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
-import { toast } from "react-toastify";
 
-type BasicInformationSectionProps = {
-    formik: FormikProps<PersonalInformationFormValues>;
-};
+const BasicInformationSection = () => {
+    const formik = useFormikContext<PersonalInformationFormValues>();
 
-const BasicInformationSection = ({ formik }: BasicInformationSectionProps) => {
     return (
         <div className="panel rounded-md border p-4">
             <h3 className="mb-4 text-lg font-medium text-primary-900">Basic Information</h3>

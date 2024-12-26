@@ -1,13 +1,12 @@
 import { Button, Select, TextInput } from "flowbite-react";
-import { FieldArray, FormikProps } from "formik";
-import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
-import { PersonalInformationFormValues } from "../../models/profile.model";
+import { FieldArray, useFormikContext } from "formik";
+import { ContactAddress, ContactAddressType, PersonalInformationFormValues } from "../../../models/profile.model";
+import { getValidationProps } from "../../../shared/hooks/useFormValidationUtils";
+import PanelContainer from "../PanelContainer";
 
-type ContactAddressPanelProps = {
-    formik: FormikProps<PersonalInformationFormValues>;
-};
+const ContactAddressPanel = () => {
+    const formik = useFormikContext<PersonalInformationFormValues>();
 
-const ContactAddressPanel = ({ formik }: ContactAddressPanelProps) => {
     return (
         <div className="panel">
             <h4 className="text-md mb-4 font-semibold">Addresses</h4>
@@ -18,34 +17,12 @@ const ContactAddressPanel = ({ formik }: ContactAddressPanelProps) => {
                         <>
                             {formik.values.contactInformation.addresses.map((address, index) => {
                                 return (
-                                    <fieldset
-                                        key={index + 1}
-                                        className="relative mb-6 rounded-lg border border-gray-200 p-6 shadow-md"
+                                    <PanelContainer
+                                        key={index}
+                                        onRemoveItem={arrayHelpers.remove}
+                                        name="Address"
+                                        index={index}
                                     >
-                                        <legend className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-1 text-sm font-medium">
-                                            {`Address #${index + 1}`}
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    arrayHelpers.remove(index);
-                                                }}
-                                                className="rounded-full p-1 text-red-500 transition-colors hover:bg-red-100 hover:text-red-700"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                >
-                                                    <path d="M18 6L6 18M6 6l12 12" />
-                                                </svg>
-                                            </button>
-                                        </legend>
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
                                                 <label
@@ -157,24 +134,28 @@ const ContactAddressPanel = ({ formik }: ContactAddressPanelProps) => {
                                                         formik,
                                                     )}
                                                 >
-                                                    <option value="mailing">Mailing</option>
-                                                    <option value="work">Work</option>
+                                                    {Object.entries(ContactAddressType).map(([key, value]) => (
+                                                        <option key={key} value={value}>
+                                                            {value}
+                                                        </option>
+                                                    ))}
                                                 </Select>
                                             </div>
                                         </div>
-                                    </fieldset>
+                                    </PanelContainer>
                                 );
                             })}
                             <Button
                                 className="btn-primary rounded-md"
                                 onClick={() => {
-                                    arrayHelpers.push({
+                                    const newAddress: ContactAddress = {
                                         country: "",
                                         city: "",
                                         street: "",
                                         postalCode: "",
-                                        type: "mailing",
-                                    });
+                                        type: ContactAddressType.MAILING,
+                                    };
+                                    arrayHelpers.push(newAddress);
                                 }}
                             >
                                 Add Address

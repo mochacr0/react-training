@@ -1,13 +1,12 @@
-import { FieldArray, FormikProps } from "formik";
-import { PersonalInformationFormValues } from "../../models/profile.model";
 import { Button, Select, TextInput } from "flowbite-react";
+import { FieldArray, useFormikContext } from "formik";
+import { Occupation, OccupationTitle, PersonalInformationFormValues } from "../../models/profile.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
+import PanelContainer from "./PanelContainer";
 
-type OccupationSectionProps = {
-    formik: FormikProps<PersonalInformationFormValues>;
-};
+const OccupationSection = () => {
+    const formik = useFormikContext<PersonalInformationFormValues>();
 
-const OccupationSection = ({ formik }: OccupationSectionProps) => {
     return (
         <div className="panel mb-6">
             <h4 className="mb-4 text-lg font-medium text-primary-900">Occupations</h4>
@@ -18,34 +17,12 @@ const OccupationSection = ({ formik }: OccupationSectionProps) => {
                         <>
                             {formik.values.occupations.map((occupation, index) => {
                                 return (
-                                    <fieldset
-                                        key={index + 1}
-                                        className="relative mb-6 rounded-lg border border-gray-200 p-6 shadow-md"
+                                    <PanelContainer
+                                        key={index}
+                                        name="Document"
+                                        onRemoveItem={arrayHelpers.remove}
+                                        index={index}
                                     >
-                                        <legend className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-1 text-sm font-medium">
-                                            {`Occupation #${index + 1}`}
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    arrayHelpers.remove(index);
-                                                }}
-                                                className="rounded-full p-1 text-red-500 transition-colors hover:bg-red-100 hover:text-red-700"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                >
-                                                    <path d="M18 6L6 18M6 6l12 12" />
-                                                </svg>
-                                            </button>
-                                        </legend>
                                         <div className="grid grid-cols-3 gap-4">
                                             <div>
                                                 <label
@@ -64,11 +41,11 @@ const OccupationSection = ({ formik }: OccupationSectionProps) => {
                                                     onBlur={formik.handleBlur}
                                                     {...getValidationProps(`occupations.${index}.title`, formik)}
                                                 >
-                                                    <option value="unemployed">Unemployed</option>
-                                                    <option value="engineer">Engineer</option>
-                                                    <option value="teacher">Teacher</option>
-                                                    <option value="doctor">Doctor</option>
-                                                    <option value="others">Others</option>
+                                                    {Object.entries(OccupationTitle).map(([key, value]) => (
+                                                        <option key={key} value={value}>
+                                                            {value}
+                                                        </option>
+                                                    ))}
                                                 </Select>
                                             </div>
                                             <div>
@@ -120,17 +97,18 @@ const OccupationSection = ({ formik }: OccupationSectionProps) => {
                                                 />
                                             </div>
                                         </div>
-                                    </fieldset>
+                                    </PanelContainer>
                                 );
                             })}
                             <Button
                                 className="btn-primary rounded-md"
                                 onClick={() => {
-                                    arrayHelpers.push({
-                                        title: "unemployed",
+                                    const newOccupation: Occupation = {
+                                        title: OccupationTitle.UNEMPLOYED,
                                         fromDate: "",
                                         toDate: "",
-                                    });
+                                    };
+                                    arrayHelpers.push(newOccupation);
                                 }}
                             >
                                 Add Occupation

@@ -1,11 +1,18 @@
-import { FieldArray, FormikProps } from "formik";
-import { PersonalInformationFormValues } from "../../models/profile.model";
 import { Button, Select, TextInput } from "flowbite-react";
-import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
+import { FieldArray, useFormikContext } from "formik";
+import {
+    ContactPhone,
+    ContactPurposeType,
+    PersonalInformationFormValues,
+    PreferContactOption,
+} from "../../../models/profile.model";
+import { getValidationProps } from "../../../shared/hooks/useFormValidationUtils";
+import PanelContainer from "../PanelContainer";
+import { capitalize } from "../../../shared/utils";
 
-type ContactPhonePanelProps = { formik: FormikProps<PersonalInformationFormValues> };
+const ContactPhonePanel = () => {
+    const formik = useFormikContext<PersonalInformationFormValues>();
 
-const ContactPhonePanel = ({ formik }: ContactPhonePanelProps) => {
     return (
         <div className="panel">
             <h4 className="text-md mb-4 font-semibold">Phones</h4>
@@ -16,34 +23,12 @@ const ContactPhonePanel = ({ formik }: ContactPhonePanelProps) => {
                         <>
                             {formik.values.contactInformation.phones.map((phone, index) => {
                                 return (
-                                    <fieldset
-                                        key={index + 1}
-                                        className="relative mb-6 rounded-lg border border-gray-200 p-6 shadow-md"
+                                    <PanelContainer
+                                        key={index}
+                                        name="Phone"
+                                        index={index}
+                                        onRemoveItem={arrayHelpers.remove}
                                     >
-                                        <legend className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-1 text-sm font-medium">
-                                            {`Phone #${index + 1}`}
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    arrayHelpers.remove(index);
-                                                }}
-                                                className="rounded-full p-1 text-red-500 transition-colors hover:bg-red-100 hover:text-red-700"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                >
-                                                    <path d="M18 6L6 18M6 6l12 12" />
-                                                </svg>
-                                            </button>
-                                        </legend>
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
                                                 <label
@@ -87,8 +72,11 @@ const ContactPhonePanel = ({ formik }: ContactPhonePanelProps) => {
                                                         formik,
                                                     )}
                                                 >
-                                                    <option value="personal">Personal</option>
-                                                    <option value="work">Work</option>
+                                                    {Object.entries(ContactPurposeType).map(([key, value]) => (
+                                                        <option key={key} value={value}>
+                                                            {value}
+                                                        </option>
+                                                    ))}
                                                 </Select>
                                             </div>
                                             <div>
@@ -110,22 +98,28 @@ const ContactPhonePanel = ({ formik }: ContactPhonePanelProps) => {
                                                         formik,
                                                     )}
                                                 >
-                                                    <option value="yes">Yes</option>
-                                                    <option value="no">No</option>
+                                                    {Object.entries(PreferContactOption).map(([key, value]) => {
+                                                        return (
+                                                            <option key={key} value={value}>
+                                                                {capitalize(key)}
+                                                            </option>
+                                                        );
+                                                    })}
                                                 </Select>
                                             </div>
                                         </div>
-                                    </fieldset>
+                                    </PanelContainer>
                                 );
                             })}
                             <Button
                                 className="btn-primary rounded-md"
                                 onClick={() => {
-                                    arrayHelpers.push({
+                                    const newPhone: ContactPhone = {
                                         number: "",
-                                        type: "personal",
-                                        isPreferred: "no",
-                                    });
+                                        type: ContactPurposeType.PERSONAL,
+                                        isPreferred: PreferContactOption.NO,
+                                    };
+                                    arrayHelpers.push(newPhone);
                                 }}
                             >
                                 Add Phone
