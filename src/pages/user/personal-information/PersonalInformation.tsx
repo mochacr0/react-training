@@ -1,6 +1,47 @@
+import { Button } from "flowbite-react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
+const DEFAULT_USER_AVATAR_URL = "/images/users/bonnie-green-2x.png";
+const MAX_AVATAR_SIZE_IN_KB = 4000; //KB
 
 const PersonalInformation = () => {
+    const avatarInputRef = useRef<HTMLInputElement>(null);
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const [avatarUrl, setAvatarUrl] = useState<string>(DEFAULT_USER_AVATAR_URL);
+
+    useEffect(() => {
+        if (!avatarFile) {
+            return;
+        }
+        const newImageUrl = URL.createObjectURL(avatarFile);
+        setAvatarUrl(newImageUrl);
+        return () => {
+            URL.revokeObjectURL(newImageUrl);
+        };
+    }, [avatarFile]);
+
+    function handleImageInputChanged(event: React.ChangeEvent<HTMLInputElement>) {
+        const file = event.target.files?.[0];
+        if (!file) {
+            return;
+        }
+        if (file.size > MAX_AVATAR_SIZE_IN_KB * 1024) {
+            toast.error(`File size should be less than ${MAX_AVATAR_SIZE_IN_KB} KB`);
+            return;
+        }
+        setAvatarFile(file);
+    }
+
+    function handleDeleteImage() {
+        if (!avatarFile) {
+            return;
+        }
+        setAvatarFile(null);
+        setAvatarUrl(DEFAULT_USER_AVATAR_URL);
+    }
+
     return (
         <div className="grid grid-cols-1 px-4 pt-6 dark:bg-gray-900 xl:gap-4">
             <div className="col-span-full mb-4 xl:mb-2">
@@ -71,21 +112,23 @@ const PersonalInformation = () => {
             </div>
             <div className="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2">
                 <div className="items-center sm:flex sm:space-x-4 xl:block xl:space-x-0 2xl:flex 2xl:space-x-4">
-                    <img
-                        className="mb-4 h-28 w-28 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0"
-                        src="/images/users/bonnie-green-2x.png"
-                        alt="Jese"
-                    />
+                    <img className="mb-4 h-28 w-28 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0" src={avatarUrl} alt="Jese" />
                     <div>
                         <h3 className="mb-1 text-xl font-bold text-gray-900 dark:text-white">Profile picture</h3>
                         <div className="mb-4 text-sm text-gray-500 dark:text-gray-400">
                             JPG, GIF or PNG. Max size of 800K
                         </div>
                         <div className="flex items-center space-x-4">
-                            <button
-                                type="button"
-                                className="inline-flex items-center rounded-lg bg-primary-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                            >
+                            <input
+                                type="file"
+                                hidden
+                                ref={avatarInputRef}
+                                accept="image/png, image/gif, image/png"
+                                size={800}
+                                onChange={handleImageInputChanged}
+                            ></input>
+
+                            <Button className="btn-primary" onClick={() => avatarInputRef.current?.click()}>
                                 <svg
                                     className="-ml-1 mr-2 h-4 w-4"
                                     fill="currentColor"
@@ -96,13 +139,10 @@ const PersonalInformation = () => {
                                     <path d="M9 13h2v5a1 1 0 11-2 0v-5z"></path>
                                 </svg>
                                 Upload picture
-                            </button>
-                            <button
-                                type="button"
-                                className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
-                            >
+                            </Button>
+                            <Button color="light" onClick={handleDeleteImage}>
                                 Delete
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -304,22 +344,16 @@ const PersonalInformation = () => {
                                     required
                                 />
                             </div>
-                            <div className="sm:col-full col-span-6">
-                                <button
-                                    className="rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                                    type="submit"
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    className="ml-1 rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                                    type="submit"
-                                >
-                                    KYC
-                                </button>
-                            </div>
                         </div>
                     </fieldset>
+                    <div className="mt-6 flex gap-2">
+                        <Link to="/user/1/pi/edit">
+                            <Button className="btn-primary">Edit</Button>
+                        </Link>
+                        <Link to="/user/1/kyc/edit">
+                            <Button className="btn-primary">KYC</Button>
+                        </Link>
+                    </div>
                 </form>
             </div>
         </div>

@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
-import { User, UserRole } from "../models/user.model";
+import { User } from "../models/user.model";
 
 type CurrentUserContextType = {
     currentUser: User | null;
@@ -9,12 +9,6 @@ type CurrentUserContextType = {
 const CurrentUserContext = createContext<CurrentUserContextType | null>(null);
 
 export const CurrentUserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    // const [currentUser, setCurrentUser] = useState<User | null>({
-    //     name: "Neo Amstrong",
-    //     email: "neoamstrong@gmail.com",
-    //     role: UserRole.CLIENT,
-    //     password: "String@",
-    // });
     const [currentUser, setCurrentUser] = useState<User | null>(getCurrentUserFromStorage());
 
     const contextValue = useMemo(() => ({ currentUser, setCurrentUser: updateCurrentUser }), [currentUser]);

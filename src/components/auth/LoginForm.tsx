@@ -47,7 +47,7 @@ const LoginForm = () => {
                 setCurrentUser(matchedUser);
                 formik.resetForm();
                 toast.success("Login successfully");
-                navigate("/");
+                navigate(`/user/${matchedUser.id}/pi`);
             } finally {
                 setIsSubmitting(false);
             }

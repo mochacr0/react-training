@@ -11,6 +11,7 @@ const userRoutes: RouteObject[] = [
         path: "user",
         element: <User />,
         children: [
+            // User Routes
             {
                 path: ":id/pi",
                 element: (
@@ -20,24 +21,26 @@ const userRoutes: RouteObject[] = [
                 ),
             },
             {
+                path: ":id/pi/edit",
+                element: <PersonalInformationForm />,
+            },
+            {
                 path: ":id/kyc",
                 element: <UserKYC />,
             },
             {
-                path: "profile",
-                element: <PersonalInformationForm />,
-            },
-            {
-                path: "kyc",
+                path: ":id/kyc/edit",
                 element: <KYCForm />,
             },
+
+            // Officer Routes
             {
                 path: "submit-review",
                 element: <SubmitReview />,
             },
             {
                 path: "profiles",
-                element: <SubmitReview />,
+                element: <h3>User Profiles</h3>,
             },
         ],
     },
