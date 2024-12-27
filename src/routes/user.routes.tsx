@@ -38,10 +38,6 @@ const userRoutes: RouteObject[] = [
                 path: "submit-review",
                 element: <SubmitReview />,
             },
-            {
-                path: "profiles",
-                element: <h3>User Profiles</h3>,
-            },
         ],
     },
 ];

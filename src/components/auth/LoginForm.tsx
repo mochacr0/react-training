@@ -8,6 +8,7 @@ import { useFormValidationUtils } from "../../shared/hooks/useFormValidationUtil
 import { findUserByEmail } from "../../shared/data/users";
 import { useCurrentUserContext } from "../../shared/CurrentUserProvider";
 import { shouldDisableButton } from "../../shared/utils";
+import { UserRole } from "../../models/user.model";
 
 type LoginFormValues = {
     email: string;
@@ -47,7 +48,11 @@ const LoginForm = () => {
                 setCurrentUser(matchedUser);
                 formik.resetForm();
                 toast.success("Login successfully");
-                navigate(`/user/${matchedUser.id}/pi`);
+                if (matchedUser.role === UserRole.CLIENT) {
+                    navigate(`/user/${matchedUser.id}/pi`);
+                } else {
+                    navigate("/user/submit-review");
+                }
             } finally {
                 setIsSubmitting(false);
             }

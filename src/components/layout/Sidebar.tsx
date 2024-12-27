@@ -29,12 +29,6 @@ const menuItems: MenuItem[] = [
         icon: "/icons/settings.svg",
         roles: [UserRole.OFFICER],
     },
-    {
-        name: "User Profiles",
-        url: "/user/profiles",
-        icon: "/icons/settings.svg",
-        roles: [UserRole.OFFICER],
-    },
 ];
 
 const Sidebar = () => {

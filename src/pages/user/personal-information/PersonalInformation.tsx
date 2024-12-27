@@ -140,7 +140,7 @@ const PersonalInformation = () => {
                                 </svg>
                                 Upload picture
                             </Button>
-                            <Button color="light" onClick={handleDeleteImage}>
+                            <Button color="light" onClick={handleDeleteImage} disabled={!avatarFile}>
                                 Delete
                             </Button>
                         </div>
