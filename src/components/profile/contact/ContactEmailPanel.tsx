@@ -1,16 +1,12 @@
 import { Button, Select, TextInput } from "flowbite-react";
-import { FieldArray, useFormikContext } from "formik";
-import {
-    ContactEmail,
-    ContactPurposeType,
-    PersonalInformationFormValues,
-    PreferContactOption,
-} from "../../../models/profile.model";
+import { FieldArray, FormikValues, useFormikContext } from "formik";
+import { ContactEmail, ContactPurposeType, PreferContactOption } from "../../../models/profile.model";
 import { getValidationProps } from "../../../shared/hooks/useFormValidationUtils";
 import PanelContainer from "../PanelContainer";
 
 const ContactEmailPanel = () => {
-    const formik = useFormikContext<PersonalInformationFormValues>();
+    const formik = useFormikContext<FormikValues>();
+    const { getFieldProps } = formik;
 
     return (
         <div className="panel">
@@ -20,7 +16,7 @@ const ContactEmailPanel = () => {
                 render={(arrayHelpers) => {
                     return (
                         <>
-                            {formik.values.contactInformation.emails.map((email, index) => {
+                            {formik.values.contactInformation.emails.map((_: ContactEmail, index: number) => {
                                 return (
                                     <PanelContainer
                                         key={index}
@@ -40,12 +36,9 @@ const ContactEmailPanel = () => {
                                                     type="email"
                                                     className="mt-2"
                                                     id={`contactInformation.emails.${index}.address`}
-                                                    name={`contactInformation.emails.${index}.address`}
                                                     placeholder="Enter email address"
                                                     required
-                                                    value={email.address}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(`contactInformation.emails.${index}.address`)}
                                                     {...getValidationProps(
                                                         `contactInformation.emails.${index}.address`,
                                                         formik,
@@ -62,10 +55,7 @@ const ContactEmailPanel = () => {
                                                 <Select
                                                     className="mt-2"
                                                     id={`contactInformation.emails.${index}.type`}
-                                                    name={`contactInformation.emails.${index}.type`}
-                                                    value={email.type}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(`contactInformation.emails.${index}.type`)}
                                                     {...getValidationProps(
                                                         `contactInformation.emails.${index}.type`,
                                                         formik,
@@ -88,10 +78,7 @@ const ContactEmailPanel = () => {
                                                 <Select
                                                     className="mt-2"
                                                     id={`contactInformation.emails.${index}.isPreferred`}
-                                                    name={`contactInformation.emails.${index}.isPreferred`}
-                                                    value={email.isPreferred}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(`contactInformation.emails.${index}.isPreferred`)}
                                                     {...getValidationProps(
                                                         `contactInformation.emails.${index}.isPreferred`,
                                                         formik,

@@ -8,7 +8,7 @@ import BasicInformationSection from "./BasicInformationSection";
 import ContactInformationSection from "./contact/ContactInformationSection";
 import IdentificationDocumentSection from "./IdentificationDocumentSection";
 import OccupationSection from "./OccupationSection";
-import personalInformationSchema from "./profile.schema";
+import { personalInformationSchema } from "./profile.schema";
 
 const initialFormValues: PersonalInformationFormValues = {
     contactInformation: {
@@ -42,13 +42,9 @@ const PersonalInformationForm = () => {
     ) {
         setIsSubmitting(true);
         setTimeout(() => {
-            try {
-                console.log(values);
-                toast.success("Profile updated successfully");
-            } finally {
-                formikHelpers.resetForm();
-                setIsSubmitting(false);
-            }
+            toast.success("Profile updated successfully");
+            formikHelpers.resetForm();
+            setIsSubmitting(false);
         }, 1500);
     }
 

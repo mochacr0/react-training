@@ -1,11 +1,12 @@
 import dayjs from "dayjs";
 import { TextInput } from "flowbite-react";
-import { useFormikContext } from "formik";
+import { FormikValues, useFormikContext } from "formik";
 import { PersonalInformationFormValues } from "../../models/profile.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 
 const BasicInformationSection = () => {
-    const formik = useFormikContext<PersonalInformationFormValues>();
+    const formik = useFormikContext<FormikValues>();
+    const { getFieldProps } = formik;
 
     return (
         <div className="panel rounded-md border p-4">
@@ -21,10 +22,7 @@ const BasicInformationSection = () => {
                         placeholder="Enter your first name"
                         required
                         id="firstName"
-                        name="basicInformation.firstName"
-                        value={formik.values.basicInformation.firstName}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
+                        {...getFieldProps("basicInformation.firstName")}
                         {...getValidationProps("basicInformation.firstName", formik)}
                     />
                 </div>
@@ -38,10 +36,7 @@ const BasicInformationSection = () => {
                         placeholder="Enter your last name"
                         required
                         id="lastName"
-                        name="basicInformation.lastName"
-                        value={formik.values.basicInformation.lastName}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
+                        {...getFieldProps("basicInformation.lastName")}
                         {...getValidationProps("basicInformation.lastName", formik)}
                     />
                 </div>
@@ -54,10 +49,7 @@ const BasicInformationSection = () => {
                         className="mt-2"
                         placeholder="Enter your middle name"
                         id="middleName"
-                        name="basicInformation.middleName"
-                        value={formik.values.basicInformation.middleName}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
+                        {...getFieldProps("basicInformation.middleName")}
                         {...getValidationProps("basicInformation.middleName", formik)}
                     />
                 </div>
@@ -70,16 +62,14 @@ const BasicInformationSection = () => {
                         className="mt-2"
                         required
                         id="dateOfBirth"
-                        name="basicInformation.dateOfBirth"
-                        value={formik.values.basicInformation.dateOfBirth}
+                        {...getFieldProps("basicInformation.dateOfBirth")}
+                        {...getValidationProps("basicInformation.dateOfBirth", formik)}
                         onChange={(event) => {
                             const dateOfBirthStringValue = event.target.value;
                             formik.setFieldValue("basicInformation.dateOfBirth", dateOfBirthStringValue);
                             const age = dayjs().diff(dayjs(dateOfBirthStringValue), "year");
                             formik.setFieldValue("basicInformation.age", age);
                         }}
-                        onBlur={formik.handleBlur}
-                        {...getValidationProps("basicInformation.dateOfBirth", formik)}
                     />
                 </div>
                 <div>
@@ -88,12 +78,10 @@ const BasicInformationSection = () => {
                     </label>
                     <TextInput
                         type="text"
-                        className="mt-2"
+                        className="mt-2 rounded-xl bg-gray-200"
                         id="age"
-                        name="basicInformation.age"
-                        value={formik.values.basicInformation.age}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
+                        placeholder="Automatically calculated"
+                        {...getFieldProps("basicInformation.age")}
                         {...getValidationProps("basicInformation.age", formik)}
                         disabled={true}
                     />

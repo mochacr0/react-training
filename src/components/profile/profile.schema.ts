@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import * as Yup from "yup";
 
-const basicInformationSchema = Yup.object().shape({
+export const basicInformationSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
     lastName: Yup.string().required("Last name is required"),
     dateOfBirth: Yup.string().required("Date of birth is required"),
@@ -27,13 +27,13 @@ const contactPhoneSchema = Yup.object().shape({
     isPreferred: Yup.string().required("Preferred is required"),
 });
 
-const contactInformationSchema = Yup.object().shape({
+export const contactInformationSchema = Yup.object().shape({
     addresses: Yup.array().of(contactAddressSchema),
     emails: Yup.array().of(contactEmailSchema),
     phones: Yup.array().of(contactPhoneSchema),
 });
 
-const identificationDocumentsSchema = Yup.array()
+export const identificationDocumentsSchema = Yup.array()
     .of(
         Yup.object().shape({
             type: Yup.string().required("Type is required"),
@@ -43,7 +43,7 @@ const identificationDocumentsSchema = Yup.array()
     )
     .min(1, "At least one identification document is required");
 
-const occupationSchema = Yup.array().of(
+export const occupationSchema = Yup.array().of(
     Yup.object().shape({
         title: Yup.string().required("Occupation is required"),
         fromDate: Yup.string().required("From date is required"),
@@ -64,11 +64,9 @@ const occupationSchema = Yup.array().of(
     }),
 );
 
-const personalInformationSchema = Yup.object().shape({
+export const personalInformationSchema = Yup.object().shape({
     contactInformation: contactInformationSchema,
     basicInformation: basicInformationSchema,
     identificationDocuments: identificationDocumentsSchema,
     occupations: occupationSchema,
 });
-
-export default personalInformationSchema;

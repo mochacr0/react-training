@@ -1,11 +1,12 @@
 import { Button, Select, TextInput } from "flowbite-react";
-import { FieldArray, useFormikContext } from "formik";
-import { ContactAddress, ContactAddressType, PersonalInformationFormValues } from "../../../models/profile.model";
+import { FieldArray, FormikValues, useFormikContext } from "formik";
+import { ContactAddress, ContactAddressType } from "../../../models/profile.model";
 import { getValidationProps } from "../../../shared/hooks/useFormValidationUtils";
 import PanelContainer from "../PanelContainer";
 
 const ContactAddressPanel = () => {
-    const formik = useFormikContext<PersonalInformationFormValues>();
+    const formik = useFormikContext<FormikValues>();
+    const { getFieldProps } = formik;
 
     return (
         <div className="panel">
@@ -15,7 +16,7 @@ const ContactAddressPanel = () => {
                 render={(arrayHelpers) => {
                     return (
                         <>
-                            {formik.values.contactInformation.addresses.map((address, index) => {
+                            {formik.values.contactInformation.addresses.map((_: ContactAddress, index: number) => {
                                 return (
                                     <PanelContainer
                                         key={index}
@@ -34,13 +35,9 @@ const ContactAddressPanel = () => {
                                                 <TextInput
                                                     className="mt-2"
                                                     type="text"
-                                                    id={`contactInformation.addresses.${index}.country`}
-                                                    name={`contactInformation.addresses.${index}.country`}
                                                     placeholder="Enter country"
                                                     required
-                                                    value={address.country}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(`contactInformation.addresses.${index}.country`)}
                                                     {...getValidationProps(
                                                         `contactInformation.addresses.${index}.country`,
                                                         formik,
@@ -58,12 +55,9 @@ const ContactAddressPanel = () => {
                                                     className="mt-2"
                                                     type="text"
                                                     id={`contactInformation.addresses.${index}.city`}
-                                                    name={`contactInformation.addresses.${index}.city`}
                                                     placeholder="Enter city"
                                                     required
-                                                    value={address.city}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(`contactInformation.addresses.${index}.city`)}
                                                     {...getValidationProps(
                                                         `contactInformation.addresses.${index}.city`,
                                                         formik,
@@ -81,12 +75,9 @@ const ContactAddressPanel = () => {
                                                     className="mt-2"
                                                     type="text"
                                                     id={`contactInformation.addresses.${index}.street`}
-                                                    name={`contactInformation.addresses.${index}.street`}
                                                     placeholder="Enter street"
                                                     required
-                                                    value={address.street}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(`contactInformation.addresses.${index}.street`)}
                                                     {...getValidationProps(
                                                         `contactInformation.addresses.${index}.street`,
                                                         formik,
@@ -104,11 +95,10 @@ const ContactAddressPanel = () => {
                                                     className="mt-2"
                                                     type="text"
                                                     id={`contactInformation.addresses.${index}.postalCode`}
-                                                    name={`contactInformation.addresses.${index}.postalCode`}
                                                     placeholder="Enter postal code"
-                                                    value={address.postalCode}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(
+                                                        `contactInformation.addresses.${index}.postalCode`,
+                                                    )}
                                                     {...getValidationProps(
                                                         `contactInformation.addresses.${index}.postalCode`,
                                                         formik,
@@ -125,10 +115,7 @@ const ContactAddressPanel = () => {
                                                 <Select
                                                     className="mt-2"
                                                     id={`contactInformation.addresses.${index}.type`}
-                                                    name={`contactInformation.addresses.${index}.type`}
-                                                    value={address.type}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(`contactInformation.addresses.${index}.type`)}
                                                     {...getValidationProps(
                                                         `contactInformation.addresses.${index}.type`,
                                                         formik,

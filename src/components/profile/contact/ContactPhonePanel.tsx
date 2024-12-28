@@ -1,17 +1,13 @@
 import { Button, Select, TextInput } from "flowbite-react";
-import { FieldArray, useFormikContext } from "formik";
-import {
-    ContactPhone,
-    ContactPurposeType,
-    PersonalInformationFormValues,
-    PreferContactOption,
-} from "../../../models/profile.model";
+import { FieldArray, FormikValues, useFormikContext } from "formik";
+import { ContactPhone, ContactPurposeType, PreferContactOption } from "../../../models/profile.model";
 import { getValidationProps } from "../../../shared/hooks/useFormValidationUtils";
-import PanelContainer from "../PanelContainer";
 import { capitalize } from "../../../shared/utils";
+import PanelContainer from "../PanelContainer";
 
 const ContactPhonePanel = () => {
-    const formik = useFormikContext<PersonalInformationFormValues>();
+    const formik = useFormikContext<FormikValues>();
+    const { getFieldProps } = formik;
 
     return (
         <div className="panel">
@@ -21,7 +17,7 @@ const ContactPhonePanel = () => {
                 render={(arrayHelpers) => {
                     return (
                         <>
-                            {formik.values.contactInformation.phones.map((phone, index) => {
+                            {formik.values.contactInformation.phones.map((_: ContactPhone, index: number) => {
                                 return (
                                     <PanelContainer
                                         key={index}
@@ -41,12 +37,9 @@ const ContactPhonePanel = () => {
                                                     type="text"
                                                     className="mt-2"
                                                     id={`contactInformation.phones.${index}.number`}
-                                                    name={`contactInformation.phones.${index}.number`}
                                                     placeholder="Enter phone address"
                                                     required
-                                                    value={phone.number}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(`contactInformation.phones.${index}.number`)}
                                                     {...getValidationProps(
                                                         `contactInformation.phones.${index}.number`,
                                                         formik,
@@ -63,10 +56,7 @@ const ContactPhonePanel = () => {
                                                 <Select
                                                     className="mt-2"
                                                     id={`contactInformation.phones.${index}.type`}
-                                                    name={`contactInformation.phones.${index}.type`}
-                                                    value={phone.type}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(`contactInformation.phones.${index}.type`)}
                                                     {...getValidationProps(
                                                         `contactInformation.phones.${index}.type`,
                                                         formik,
@@ -89,10 +79,7 @@ const ContactPhonePanel = () => {
                                                 <Select
                                                     className="mt-2"
                                                     id={`contactInformation.phones.${index}.isPreferred`}
-                                                    name={`contactInformation.phones.${index}.isPreferred`}
-                                                    value={phone.isPreferred}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(`contactInformation.phones.${index}.isPreferred`)}
                                                     {...getValidationProps(
                                                         `contactInformation.phones.${index}.isPreferred`,
                                                         formik,

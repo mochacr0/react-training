@@ -1,12 +1,13 @@
 import { Button, FileInput, Select, TextInput } from "flowbite-react";
-import { ArrayHelpers, FieldArray, useFormikContext } from "formik";
+import { ArrayHelpers, FieldArray, FormikValues, useFormikContext } from "formik";
 import { toast } from "react-toastify";
-import { IdentificationDocumentType, PersonalInformationFormValues } from "../../models/profile.model";
+import { IdentificationDocumentType } from "../../models/profile.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 import PanelContainer from "./PanelContainer";
 
 const IdentificationDocumentSection = () => {
-    const formik = useFormikContext<PersonalInformationFormValues>();
+    const formik = useFormikContext<FormikValues>();
+    const { getFieldProps } = formik;
 
     function handleRemoveDocument(arrayHelpers: ArrayHelpers, index: number) {
         if (formik.values.identificationDocuments.length === 1) {
@@ -24,7 +25,7 @@ const IdentificationDocumentSection = () => {
                 render={(arrayHelpers) => {
                     return (
                         <>
-                            {formik.values.identificationDocuments.map((document, index) => {
+                            {formik.values.identificationDocuments.map((_: Document, index: number) => {
                                 return (
                                     <PanelContainer
                                         key={index}
@@ -46,10 +47,7 @@ const IdentificationDocumentSection = () => {
                                                     className="mt-2"
                                                     required
                                                     id={`identificationDocuments.${index}.type`}
-                                                    name={`identificationDocuments.${index}.type`}
-                                                    value={document.type}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(`identificationDocuments.${index}.type`)}
                                                     {...getValidationProps(
                                                         `identificationDocuments.${index}.type`,
                                                         formik,
@@ -74,19 +72,17 @@ const IdentificationDocumentSection = () => {
                                                     className="mt-2"
                                                     required
                                                     id={`identificationDocuments.${index}.expiryDate`}
-                                                    name={`identificationDocuments.${index}.expiryDate`}
-                                                    value={document.expiryDate}
+                                                    {...getFieldProps(`identificationDocuments.${index}.expiryDate`)}
+                                                    {...getValidationProps(
+                                                        `identificationDocuments.${index}.expiryDate`,
+                                                        formik,
+                                                    )}
                                                     onChange={(event) => {
                                                         formik.setFieldValue(
                                                             `identificationDocuments.${index}.expiryDate`,
                                                             event.target.value,
                                                         );
                                                     }}
-                                                    onBlur={formik.handleBlur}
-                                                    {...getValidationProps(
-                                                        `identificationDocuments.${index}.expiryDate`,
-                                                        formik,
-                                                    )}
                                                 />
                                             </div>
                                             <div>
@@ -97,26 +93,14 @@ const IdentificationDocumentSection = () => {
                                                     className="mt-2"
                                                     required
                                                     id={`identificationDocuments.${index}.file`}
-                                                    name={`identificationDocuments.${index}.file`}
-                                                    accept="image/*, application/pdf"
+                                                    // accept="image/*, application/pdf"
                                                     multiple={false}
-                                                    onChange={(event) => {
-                                                        const file = event.target.files?.[0];
-                                                        if (file) {
-                                                            formik.setFieldValue(
-                                                                `identificationDocuments.${index}.file`,
-                                                                file,
-                                                            );
-                                                            formik.setFieldTouched(
-                                                                `identificationDocuments.${index}.file`,
-                                                                true,
-                                                            );
-                                                        }
-                                                    }}
+                                                    {...getFieldProps(`identificationDocuments.${index}.file`)}
                                                     {...getValidationProps(
                                                         `identificationDocuments.${index}.file`,
                                                         formik,
                                                     )}
+                                                    value={formik.values?.identificationDocuments[index]?.file ?? ""}
                                                 />
                                             </div>
                                         </div>

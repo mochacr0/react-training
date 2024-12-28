@@ -1,11 +1,12 @@
 import { Button, Select, TextInput } from "flowbite-react";
-import { FieldArray, useFormikContext } from "formik";
-import { Occupation, OccupationTitle, PersonalInformationFormValues } from "../../models/profile.model";
+import { FieldArray, FormikValues, useFormikContext } from "formik";
+import { Occupation, OccupationTitle } from "../../models/profile.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 import PanelContainer from "./PanelContainer";
 
 const OccupationSection = () => {
-    const formik = useFormikContext<PersonalInformationFormValues>();
+    const formik = useFormikContext<FormikValues>();
+    const { getFieldProps } = formik;
 
     return (
         <div className="panel mb-6">
@@ -15,7 +16,7 @@ const OccupationSection = () => {
                 render={(arrayHelpers) => {
                     return (
                         <>
-                            {formik.values.occupations.map((occupation, index) => {
+                            {formik.values.occupations.map((_: Occupation, index: number) => {
                                 return (
                                     <PanelContainer
                                         key={index}
@@ -35,10 +36,7 @@ const OccupationSection = () => {
                                                     className="mt-2"
                                                     required
                                                     id={`occupations.${index}.title`}
-                                                    name={`occupations.${index}.title`}
-                                                    value={occupation.title}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
+                                                    {...getFieldProps(`occupations.${index}.title`)}
                                                     {...getValidationProps(`occupations.${index}.title`, formik)}
                                                 >
                                                     {Object.entries(OccupationTitle).map(([key, value]) => (
@@ -60,16 +58,14 @@ const OccupationSection = () => {
                                                     className="mt-2"
                                                     required
                                                     id={`occupations.${index}.fromDate`}
-                                                    name={`occupations.${index}.fromDate`}
-                                                    value={occupation.fromDate}
+                                                    {...getFieldProps(`occupations.${index}.fromDate`)}
+                                                    {...getValidationProps(`occupations.${index}.fromDate`, formik)}
                                                     onChange={(event) => {
                                                         formik.setFieldValue(
                                                             `occupations.${index}.fromDate`,
                                                             event.target.value,
                                                         );
                                                     }}
-                                                    onBlur={formik.handleBlur}
-                                                    {...getValidationProps(`occupations.${index}.fromDate`, formik)}
                                                 />
                                             </div>
                                             <div>
@@ -84,16 +80,14 @@ const OccupationSection = () => {
                                                     className="mt-2"
                                                     required
                                                     id={`occupations.${index}.toDate`}
-                                                    name={`occupations.${index}.toDate`}
-                                                    value={occupation.toDate}
+                                                    {...getFieldProps(`occupations.${index}.toDate`)}
+                                                    {...getValidationProps(`occupations.${index}.toDate`, formik)}
                                                     onChange={(event) => {
                                                         formik.setFieldValue(
                                                             `occupations.${index}.toDate`,
                                                             event.target.value,
                                                         );
                                                     }}
-                                                    onBlur={formik.handleBlur}
-                                                    {...getValidationProps(`occupations.${index}.toDate`, formik)}
                                                 />
                                             </div>
                                         </div>
