@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { useFormValidationUtils } from "../../shared/hooks/useFormValidationUtils";
+import { useResetPasswordMutation } from "../../redux/features/auth.api.slice";
+import { ResetPasswordRequest } from "../../models/auth.model";
 
 type ResetPasswordFormProps = {
     email: string;
@@ -16,10 +18,11 @@ const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email address").required("Email is required"),
     password: Yup.string()
         .required("Password is required")
-        .min(6, "Password must be at least 6 characters")
+        .min(12, "Password must be at least 12 characters")
+        .max(16, "Password must be at most 16 characters")
         .matches(
-            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$/,
-            "Password must contain at least 1 uppercase letter, 1 lowercase letter, and 1 special character",
+            /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#,&!]).{12,16}$/,
+            "Password must contain at least one letter, one digit, and one special character (@, #, &, or !)",
         ),
     confirmPassword: Yup.string()
         .required("Confirm password is required")
@@ -39,16 +42,30 @@ const ResetPasswordForm = () => {
         validationSchema: validationSchema,
         onSubmit: handleSubmit,
     });
+    const [resetPassword, resetPasswordMutation] = useResetPasswordMutation();
     const { getErrorFieldColor, getErrorFieldMessage } = useFormValidationUtils(formik);
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    function handleSubmit(values: ResetPasswordFormProps) {
-        setIsSubmitting(true);
-        setTimeout(() => {
-            setIsSubmitting(false);
+    async function handleSubmit(values: ResetPasswordFormProps) {
+        const resetPasswordRequest: ResetPasswordRequest = {
+            email: values.email,
+            password: values.password,
+            confirmPassword: values.confirmPassword,
+        };
+        try {
+            const resetPasswordResponse = await resetPassword(resetPasswordRequest).unwrap();
+            if (resetPasswordResponse?.errors) {
+                throw new Error(resetPasswordResponse.errors[0]);
+            }
+
             toast.success("Password reset successfully");
             navigate("/auth/login");
-        }, 3000);
+        } catch (error: any) {
+            let errorMessage = "Unknown error";
+            if (error instanceof Error) {
+                errorMessage = error.message;
+            }
+            toast.error("Failed to login: " + errorMessage);
+        }
     }
 
     return (
@@ -66,7 +83,7 @@ const ResetPasswordForm = () => {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     helperText={getErrorFieldMessage("email")}
-                    disabled={isSubmitting}
+                    disabled={resetPasswordMutation.isLoading}
                 />
             </div>
             <div>
@@ -82,7 +99,7 @@ const ResetPasswordForm = () => {
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     helperText={getErrorFieldMessage("password")}
-                    disabled={isSubmitting}
+                    disabled={resetPasswordMutation.isLoading}
                 />
             </div>
             <div>
@@ -101,15 +118,15 @@ const ResetPasswordForm = () => {
                     value={formik.values.confirmPassword}
                     onChange={formik.handleChange}
                     helperText={getErrorFieldMessage("confirmPassword")}
-                    disabled={isSubmitting}
+                    disabled={resetPasswordMutation.isLoading}
                 />
             </div>
             <Button
                 size="lg"
                 color="blue"
                 type="submit"
-                disabled={!formik.dirty || isSubmitting}
-                isProcessing={isSubmitting}
+                disabled={!formik.dirty || resetPasswordMutation.isLoading}
+                isProcessing={resetPasswordMutation.isLoading}
             >
                 Reset password
             </Button>

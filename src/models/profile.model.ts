@@ -1,4 +1,6 @@
-import { basicInformationSchema } from "./../components/profile/profile.schema";
+import { ApiResponse } from "./common.model";
+import { UserRole } from "./user.model";
+
 export type BasicInfomation = {
     firstName: string;
     lastName: string;
@@ -157,3 +159,20 @@ export type FinancialStatusFormValues = {
     totalLiabilityAmount: number;
     totalWealthSourceAmount: number;
 };
+
+export type PersonalInformation = {
+    firstName: string;
+    lastName: string;
+    country: string;
+    city: string;
+    address: string;
+    phoneNumber: string;
+    organization: string;
+    department: string;
+    email: string;
+    birthday: string;
+    role: string;
+    postalCode: string;
+};
+
+export interface GetPersonalInformationResponse extends ApiResponse<PersonalInformation> {}

@@ -1,31 +1,25 @@
 import { Button, HR } from "flowbite-react";
 import { Form, Formik } from "formik";
 import { useState } from "react";
-import * as Yup from "yup";
+import { toast } from "react-toastify";
 import {
     FinancialStatusFormValues,
     IdentificationDocumentType,
     InvestmentExpType,
     InvestmentRiskToleranceType,
 } from "../../models/profile.model";
+import ErrorFocuser from "../ErrorFocuser";
 import BasicInformationSection from "../profile/BasicInformationSection";
 import ContactInformationSection from "../profile/contact/ContactInformationSection";
 import IdentificationDocumentSection from "../profile/IdentificationDocumentSection";
 import OccupationSection from "../profile/OccupationSection";
-import {
-    basicInformationSchema,
-    contactInformationSchema,
-    identificationDocumentsSchema,
-    occupationSchema,
-} from "../profile/profile.schema";
 import AssetSection from "./AssetSection";
 import IncomeSection from "./IncomeSection";
 import InvestmentSection from "./InvestmentSection";
+import { financialStatusSchema } from "./kyc.schema";
 import LiabilitySection from "./LiabilitySection";
 import NetWorthSection from "./NetWorthSection";
 import WealthSourceSection from "./WealthSourceSection";
-import { toast } from "react-toastify";
-import { shouldDisableButton } from "../../shared/utils";
 
 const initialFormValues: FinancialStatusFormValues = {
     basicInformation: {
@@ -62,43 +56,6 @@ const initialFormValues: FinancialStatusFormValues = {
     totalWealthSourceAmount: 0,
 };
 
-const incomeSchema = Yup.object().shape({
-    type: Yup.string().required("Income type is required"),
-    amount: Yup.number().required("Income amount is required"),
-});
-
-const assetSchema = Yup.object().shape({
-    type: Yup.string().required("Asset type is required"),
-    amount: Yup.number().required("Asset amount is required"),
-});
-
-const liabilitySchema = Yup.object().shape({
-    type: Yup.string().required("Liability type is required"),
-    amount: Yup.number().required("Liability amount is required"),
-});
-
-const wealthSourceSchema = Yup.object().shape({
-    type: Yup.string().required("Wealth source type is required"),
-    amount: Yup.number().required("Wealth source amount is required"),
-});
-
-const investmentSchema = Yup.object().shape({
-    experienceType: Yup.string().required("Experience type is required"),
-    riskToleranceType: Yup.string().required("Risk tolerance type is required"),
-});
-
-const financialStatusSchema = Yup.object().shape({
-    basicInformation: basicInformationSchema,
-    contactInformation: contactInformationSchema,
-    identificationDocuments: identificationDocumentsSchema,
-    occupations: occupationSchema,
-    incomes: Yup.array().of(incomeSchema),
-    assets: Yup.array().of(assetSchema),
-    liabilities: Yup.array().of(liabilitySchema),
-    wealthSources: Yup.array().of(wealthSourceSchema),
-    investment: investmentSchema,
-});
-
 const KYCPage = () => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -127,18 +84,19 @@ const KYCPage = () => {
                             <LiabilitySection />
                             <WealthSourceSection />
                             <NetWorthSection />
-                            {/* <InvestmentSection /> */}
+                            <InvestmentSection />
                             <HR />
                             <div className="flex justify-end">
                                 <Button
                                     type="submit"
                                     className="btn-primary rounded-md px-4 py-2"
                                     isProcessing={isSubmitting}
-                                    disabled={shouldDisableButton(formikHelpers, isSubmitting)}
+                                    // disabled={shouldDisableButton(formikHelpers, isSubmitting)}
                                 >
                                     Submit
                                 </Button>
                             </div>
+                            <ErrorFocuser />
                         </Form>
                     );
                 }}

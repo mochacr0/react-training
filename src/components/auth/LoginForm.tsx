@@ -9,6 +9,8 @@ import { findUserByEmail } from "../../shared/data/users";
 import { useCurrentUserContext } from "../../shared/CurrentUserProvider";
 import { shouldDisableButton } from "../../shared/utils";
 import { UserRole } from "../../models/user.model";
+import { useLoginMutation } from "../../redux/features/auth.api.slice";
+import { LoginRequest } from "../../models/auth.model";
 
 type LoginFormValues = {
     email: string;
@@ -17,7 +19,14 @@ type LoginFormValues = {
 
 const validationSchema = Yup.object({
     email: Yup.string().required("Email is required").email("Invalid email address"),
-    password: Yup.string().required("Password is required"),
+    password: Yup.string()
+        .required("Password is required")
+        .min(12, "Password must be at least 12 characters")
+        .max(16, "Password must be at most 16 characters")
+        .matches(
+            /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#,&!]).{12,16}$/,
+            "Password must contain at least one letter, one digit, and one special character (@, #, &, or !)",
+        ),
 });
 
 const initialFormValues: LoginFormValues = {
@@ -32,31 +41,40 @@ const LoginForm = () => {
         validationSchema,
         onSubmit: handleSubmit,
     });
+    const [login, loginMutation] = useLoginMutation();
     const { getErrorFieldColor, getErrorFieldMessage } = useFormValidationUtils(formik);
     const { setCurrentUser } = useCurrentUserContext();
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    function handleSubmit(values: LoginFormValues) {
-        setIsSubmitting(true);
-        setTimeout(() => {
-            try {
-                const matchedUser = findUserByEmail(values.email);
-                if (!matchedUser || matchedUser.password !== values.password) {
-                    toast.error("Invalid email or password");
-                    return;
-                }
-                setCurrentUser(matchedUser);
-                formik.resetForm();
-                toast.success("Login successfully");
-                if (matchedUser.role === UserRole.CLIENT) {
-                    navigate(`/user/${matchedUser.id}/pi`);
-                } else {
-                    navigate("/user/submit-review");
-                }
-            } finally {
-                setIsSubmitting(false);
+    async function handleSubmit(values: LoginFormValues) {
+        try {
+            const loginRequest: LoginRequest = {
+                email: values.email,
+                password: values.password,
+            };
+            const loginResponse = await login(loginRequest).unwrap();
+            if (loginResponse?.errors) {
+                throw new Error(loginResponse.errors[0]);
             }
-        }, 1500);
+
+            if (!loginResponse.data) {
+                throw new Error("User is empty");
+            }
+
+            setCurrentUser(loginResponse.data);
+            formik.resetForm();
+            toast.success("Login successfully");
+            if (loginResponse.data.role === UserRole.CLIENT) {
+                navigate(`/user/${loginResponse.data.id}/pi`);
+            } else {
+                navigate("/user/submit-review");
+            }
+        } catch (error: any) {
+            let errorMessage = "Unknown error";
+            if (error instanceof Error) {
+                errorMessage = error.message;
+            }
+            toast.error("Failed to login: " + errorMessage);
+        }
     }
 
     return (
@@ -75,7 +93,7 @@ const LoginForm = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={getErrorFieldMessage("email")}
-                    disabled={isSubmitting}
+                    disabled={loginMutation.isLoading}
                 />
             </div>
             <div>
@@ -87,12 +105,14 @@ const LoginForm = () => {
                     name="password"
                     placeholder="••••••••"
                     required
+                    minLength={12}
+                    maxLength={16}
                     color={getErrorFieldColor("password")}
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={getErrorFieldMessage("password")}
-                    disabled={isSubmitting}
+                    disabled={loginMutation.isLoading}
                 />
             </div>
             <div className="flex items-start">
@@ -102,7 +122,7 @@ const LoginForm = () => {
                         name="remember"
                         required
                         color="blue"
-                        disabled={isSubmitting}
+                        disabled={loginMutation.isLoading}
                     />
                 </div>
                 <div className="ml-3 text-sm">
@@ -121,8 +141,8 @@ const LoginForm = () => {
                 size="lg"
                 color="blue"
                 type="submit"
-                disabled={shouldDisableButton(formik, isSubmitting)}
-                isProcessing={isSubmitting}
+                disabled={shouldDisableButton(formik, loginMutation.isLoading)}
+                isProcessing={loginMutation.isLoading}
             >
                 Login to my account
             </Button>

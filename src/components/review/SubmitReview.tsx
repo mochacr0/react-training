@@ -1,8 +1,5 @@
 import { Badge, Button, Modal, Pagination } from "flowbite-react";
 import { useState } from "react";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { CiCircleCheck } from "react-icons/ci";
-import { CiCircleRemove } from "react-icons/ci";
 
 enum Action {
     APPROVE = "Approve",

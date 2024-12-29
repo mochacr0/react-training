@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { useFormValidationUtils } from "../../../shared/hooks/useFormValidationUtils";
+import { useSignUpMutation } from "../../../redux/features/auth.api.slice";
+import { SignUpRequest } from "../../../models/auth.model";
 
 type SignupFormValues = {
     email: string;
@@ -16,10 +18,11 @@ const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email address").required("Email is required"),
     password: Yup.string()
         .required("Password is required")
-        .min(6, "Password must be at least 6 characters")
+        .min(12, "Password must be at least 12 characters")
+        .max(16, "Password must be at most 16 characters")
         .matches(
-            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]+$/,
-            "Password must contain at least 1 uppercase letter, 1 lowercase letter, and 1 special character",
+            /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#,&!]).{12,16}$/,
+            "Password must contain at least one letter, one digit, and one special character (@, #, &, or !)",
         ),
     confirmPassword: Yup.string()
         .required("Confirm password is required")
@@ -34,26 +37,41 @@ const initialFormValues: SignupFormValues = {
 
 const SignUpForm = () => {
     const navigate = useNavigate();
+    const [signUp, signUpMutation] = useSignUpMutation();
     const formik = useFormik<SignupFormValues>({
         initialValues: initialFormValues,
         validationSchema: validationSchema,
         onSubmit: handleSubmit,
     });
-    const { getErrorFieldColor, getErrorFieldMessage } = useFormValidationUtils(formik);
     const [acceptTerms, setAcceptTerms] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const { getErrorFieldColor, getErrorFieldMessage } = useFormValidationUtils(formik);
 
-    function handleSubmit(values: SignupFormValues) {
+    async function handleSubmit(values: SignupFormValues) {
         if (!acceptTerms) {
             toast.info("Please accept the terms and conditions");
             return;
         }
-        setIsSubmitting(true);
-        setTimeout(() => {
-            setIsSubmitting(false);
-            toast.success("Account created successfully");
+        try {
+            const signUpRequest: SignUpRequest = {
+                email: values.email,
+                password: values.password,
+                confirmPassword: values.confirmPassword,
+            };
+            const signUpResponse = await signUp(signUpRequest).unwrap();
+            if (signUpResponse.errors) {
+                throw new Error(signUpResponse.errors[0]);
+            }
+
+            toast.success(signUpResponse.message);
+            formik.resetForm();
             navigate("/auth/login");
-        }, 3000);
+        } catch (error: any) {
+            let errorMessage = "Unknown error";
+            if (error instanceof Error) {
+                errorMessage = error.message;
+            }
+            toast.error("Failed to login: " + errorMessage);
+        }
     }
 
     return (
@@ -71,7 +89,7 @@ const SignUpForm = () => {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     helperText={getErrorFieldMessage("email")}
-                    disabled={isSubmitting}
+                    disabled={signUpMutation.isLoading}
                 />
             </div>
             <div>
@@ -87,7 +105,7 @@ const SignUpForm = () => {
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     helperText={getErrorFieldMessage("password")}
-                    disabled={isSubmitting}
+                    disabled={signUpMutation.isLoading}
                 />
             </div>
             <div>
@@ -106,7 +124,7 @@ const SignUpForm = () => {
                     value={formik.values.confirmPassword}
                     onChange={formik.handleChange}
                     helperText={getErrorFieldMessage("confirmPassword")}
-                    disabled={isSubmitting}
+                    disabled={signUpMutation.isLoading}
                 />
             </div>
             <div className="flex items-start">
@@ -118,7 +136,7 @@ const SignUpForm = () => {
                         onChange={() => {
                             setAcceptTerms(!acceptTerms);
                         }}
-                        disabled={isSubmitting}
+                        disabled={signUpMutation.isLoading}
                     />
                 </div>
                 <div className="ml-3 text-sm">
@@ -134,8 +152,8 @@ const SignUpForm = () => {
                 size="lg"
                 color="blue"
                 type="submit"
-                disabled={!formik.dirty || isSubmitting}
-                isProcessing={isSubmitting}
+                disabled={!formik.dirty || signUpMutation.isLoading}
+                isProcessing={signUpMutation.isLoading}
             >
                 Create account
             </Button>

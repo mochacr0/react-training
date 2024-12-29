@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import { TextInput } from "flowbite-react";
 import { FormikValues, useFormikContext } from "formik";
-import { PersonalInformationFormValues } from "../../models/profile.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 
 const BasicInformationSection = () => {

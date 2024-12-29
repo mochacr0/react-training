@@ -1,11 +1,10 @@
 import { RouteObject } from "react-router";
+import KYCPage from "../components/kyc/KYCPage";
+import PersonalInformationForm from "../components/profile/PersonalInformationForm";
+import SubmitReview from "../components/review/SubmitReview";
 import UserKYC from "../pages/user/kyc/kyc";
 import PersonalInformation from "../pages/user/personal-information/PersonalInformation";
 import User from "../pages/user/user";
-import PersonalInformationForm from "../components/profile/PersonalInformationForm";
-import KYCForm from "../components/kyc/KYCFormSave";
-import SubmitReview from "../components/review/SubmitReview";
-import KYCPage from "../components/kyc/KYCPage";
 
 const userRoutes: RouteObject[] = [
     {

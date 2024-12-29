@@ -2,15 +2,22 @@ import HomeComponent from "../pages/home/HomeComponent";
 import userRoutes from "./user.routes";
 import authRoutes from "./auth.routes";
 import DefaultLayout from "../components/layout/DefaultLayout";
+import { RouteObject } from "react-router";
+import RequiresAuth from "../components/auth/RequiresAuth";
+import { UserRole } from "../models/user.model";
 
-const pageRoutes = [
+const pageRoutes: RouteObject[] = [
     {
         path: "/",
         element: <DefaultLayout />,
         children: [
             {
-                path: "home",
-                element: <HomeComponent />,
+                element: (
+                    <RequiresAuth allowedRoles={[UserRole.CLIENT, UserRole.OFFICER]}>
+                        <HomeComponent />
+                    </RequiresAuth>
+                ),
+                index: true,
             },
             ...authRoutes,
             ...userRoutes,

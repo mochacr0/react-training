@@ -1,12 +1,6 @@
 import dayjs from "dayjs";
 import * as Yup from "yup";
 
-export const basicInformationSchema = Yup.object().shape({
-    firstName: Yup.string().required("First name is required"),
-    lastName: Yup.string().required("Last name is required"),
-    dateOfBirth: Yup.string().required("Date of birth is required"),
-});
-
 const contactAddressSchema = Yup.object().shape({
     country: Yup.string().required("Country is required"),
     city: Yup.string().required("City is required"),
@@ -27,6 +21,37 @@ const contactPhoneSchema = Yup.object().shape({
     isPreferred: Yup.string().required("Preferred is required"),
 });
 
+const singleIdentificationDocumentSchema = Yup.object().shape({
+    type: Yup.string().required("Type is required"),
+    expiryDate: Yup.string().required("Expiry date is required"),
+    file: Yup.mixed().required("File is required"),
+});
+
+const singleOccupationSchema = Yup.object().shape({
+    title: Yup.string().required("Occupation is required"),
+    fromDate: Yup.string().required("From date is required"),
+    toDate: Yup.string().test(
+        "fromDateIsBeforeToDate",
+        "To date must be greater than from date",
+        function (value, context) {
+            if (value && context.parent.fromDate) {
+                const fromDate = dayjs(context.parent.fromDate);
+                const toDate = dayjs(value);
+                if (toDate.isBefore(fromDate)) {
+                    return false;
+                }
+            }
+            return true;
+        },
+    ),
+});
+
+export const basicInformationSchema = Yup.object().shape({
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    dateOfBirth: Yup.string().required("Date of birth is required"),
+});
+
 export const contactInformationSchema = Yup.object().shape({
     addresses: Yup.array().of(contactAddressSchema),
     emails: Yup.array().of(contactEmailSchema),
@@ -34,35 +59,10 @@ export const contactInformationSchema = Yup.object().shape({
 });
 
 export const identificationDocumentsSchema = Yup.array()
-    .of(
-        Yup.object().shape({
-            type: Yup.string().required("Type is required"),
-            expiryDate: Yup.string().required("Expiry date is required"),
-            file: Yup.mixed().required("File is required"),
-        }),
-    )
+    .of(singleIdentificationDocumentSchema)
     .min(1, "At least one identification document is required");
 
-export const occupationSchema = Yup.array().of(
-    Yup.object().shape({
-        title: Yup.string().required("Occupation is required"),
-        fromDate: Yup.string().required("From date is required"),
-        toDate: Yup.string().test(
-            "fromDateIsBeforeToDate",
-            "To date must be greater than from date",
-            function (value, context) {
-                if (value && context.parent.fromDate) {
-                    const fromDate = dayjs(context.parent.fromDate);
-                    const toDate = dayjs(value);
-                    if (toDate.isBefore(fromDate)) {
-                        return false;
-                    }
-                }
-                return true;
-            },
-        ),
-    }),
-);
+export const occupationSchema = Yup.array().of(singleOccupationSchema);
 
 export const personalInformationSchema = Yup.object().shape({
     contactInformation: contactInformationSchema,

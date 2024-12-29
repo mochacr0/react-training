@@ -1,12 +1,16 @@
 import { RouterProvider } from "react-router";
 import appRouter from "./routes/app.router";
 import { CurrentUserProvider } from "./shared/CurrentUserProvider";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 function App() {
     return (
-        <CurrentUserProvider>
-            <RouterProvider router={appRouter} />
-        </CurrentUserProvider>
+        <Provider store={store}>
+            <CurrentUserProvider>
+                <RouterProvider router={appRouter} />
+            </CurrentUserProvider>
+        </Provider>
     );
 }
 

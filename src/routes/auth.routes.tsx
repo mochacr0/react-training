@@ -4,7 +4,7 @@ import RequiresAuth from "../components/auth/RequiresAuth";
 import LoginPage from "../pages/auth/login/LoginPage";
 import LogoutPage from "../pages/auth/logout/LogoutPage";
 import ResetPasswordPage from "../pages/auth/reset-password/ResetPasswordPage";
-import SignUpForm from "../pages/auth/sign-up/SignUpForm";
+import SignUpPage from "../pages/auth/sign-up/SignUpPage";
 
 const authRoutes: RouteObject[] = [
     {
@@ -22,7 +22,7 @@ const authRoutes: RouteObject[] = [
                 path: "sign-up",
                 element: (
                     <LoggedInUserRouter>
-                        <SignUpForm />
+                        <SignUpPage />
                     </LoggedInUserRouter>
                 ),
             },
