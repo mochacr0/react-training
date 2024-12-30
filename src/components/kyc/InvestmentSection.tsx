@@ -1,7 +1,7 @@
 import { Select } from "flowbite-react";
 import { FormikValues, useFormikContext } from "formik";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
-import { InvestmentExpType, InvestmentRiskToleranceType } from "../../models/profile.model";
+import { InvestmentExpType, InvestmentRiskToleranceType } from "../../models/kyc.model";
 
 const InvestmentSection = () => {
     const formik = useFormikContext<FormikValues>();
@@ -22,7 +22,7 @@ const InvestmentSection = () => {
                         {...getValidationProps(`investment.experienceType`, formik)}
                     >
                         {Object.entries(InvestmentExpType).map(([key, value]) => (
-                            <option key={key} value={value}>
+                            <option key={key} value={key}>
                                 {value}
                             </option>
                         ))}
@@ -39,7 +39,7 @@ const InvestmentSection = () => {
                         {...getValidationProps(`investment.riskToleranceType`, formik)}
                     >
                         {Object.entries(InvestmentRiskToleranceType).map(([key, value]) => (
-                            <option key={key} value={value}>
+                            <option key={key} value={key}>
                                 {value}
                             </option>
                         ))}

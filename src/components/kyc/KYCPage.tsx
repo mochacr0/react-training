@@ -1,13 +1,9 @@
-import { Button, HR } from "flowbite-react";
+import { Button } from "flowbite-react";
 import { Form, Formik } from "formik";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import {
-    FinancialStatusFormValues,
-    IdentificationDocumentType,
-    InvestmentExpType,
-    InvestmentRiskToleranceType,
-} from "../../models/profile.model";
+import { FinancialStatusFormValues, InvestmentExpType, InvestmentRiskToleranceType } from "../../models/kyc.model";
+import { IdentificationDocumentType } from "../../models/profile.model";
 import ErrorFocuser from "../ErrorFocuser";
 import BasicInformationSection from "../profile/BasicInformationSection";
 import ContactInformationSection from "../profile/contact/ContactInformationSection";
@@ -78,14 +74,12 @@ const KYCPage = () => {
                             <ContactInformationSection />
                             <IdentificationDocumentSection />
                             <OccupationSection />
-                            <HR />
                             <IncomeSection />
                             <AssetSection />
                             <LiabilitySection />
                             <WealthSourceSection />
                             <NetWorthSection />
                             <InvestmentSection />
-                            <HR />
                             <div className="flex justify-end">
                                 <Button
                                     type="submit"

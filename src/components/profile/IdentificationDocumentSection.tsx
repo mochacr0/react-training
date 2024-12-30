@@ -93,7 +93,6 @@ const IdentificationDocumentSection = () => {
                                                     className="mt-2"
                                                     required
                                                     id={`identificationDocuments.${index}.file`}
-                                                    // accept="image/*, application/pdf"
                                                     multiple={false}
                                                     {...getFieldProps(`identificationDocuments.${index}.file`)}
                                                     {...getValidationProps(

@@ -2,7 +2,6 @@ import { RouteObject } from "react-router";
 import KYCPage from "../components/kyc/KYCPage";
 import PersonalInformationForm from "../components/profile/PersonalInformationForm";
 import SubmitReview from "../components/review/SubmitReview";
-import UserKYC from "../pages/user/kyc/kyc";
 import PersonalInformation from "../pages/user/personal-information/PersonalInformation";
 import User from "../pages/user/user";
 
@@ -23,10 +22,6 @@ const userRoutes: RouteObject[] = [
             {
                 path: ":id/pi/edit",
                 element: <PersonalInformationForm />,
-            },
-            {
-                path: ":id/kyc",
-                element: <UserKYC />,
             },
             {
                 path: ":id/kyc/edit",

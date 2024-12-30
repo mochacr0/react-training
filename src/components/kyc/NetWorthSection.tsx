@@ -1,7 +1,7 @@
 import { TextInput } from "flowbite-react";
 import { useFormikContext } from "formik";
 import { useEffect, useState } from "react";
-import { FinancialStatusFormValues } from "../../models/profile.model";
+import { FinancialStatusFormValues } from "../../models/kyc.model";
 
 const NetWorthSection = () => {
     const {

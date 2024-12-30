@@ -1,5 +1,4 @@
 import { ApiResponse } from "./common.model";
-import { UserRole } from "./user.model";
 
 export type BasicInfomation = {
     firstName: string;
@@ -76,88 +75,11 @@ export type Occupation = {
     toDate: string;
 };
 
-export type PersonalInformationFormValues = {
+export type PersonalInforDetailsFormValues = {
     contactInformation: ContactInformation;
     basicInformation: BasicInfomation;
     identificationDocuments: IdentificationDocument[];
     occupations: Occupation[];
-};
-
-export enum IncomeType {
-    SALARY = "Salary",
-    INVESTMENT = "Invesment",
-    OTHERS = "Others",
-}
-
-export type Income = {
-    type: IncomeType;
-    amount: number;
-};
-
-export enum AssetType {
-    BOND = "Bond",
-    LIQUIDITY = "Liquidity",
-    REAL_ESTATE = "Real Estate",
-    OTHERS = "Others",
-}
-
-export type Asset = {
-    type: AssetType;
-    amount: number;
-};
-
-export enum LiabilityType {
-    PERSONAL_LOAN = "Personal Loan",
-    REAL_ESTATE_LOAN = "Real Estate Loan",
-    OTHERS = "Others",
-}
-
-export type Liability = {
-    type: LiabilityType;
-    amount: number;
-};
-
-export enum WealthSourceType {
-    INHERITANCE = "Inheritance",
-    DONATION = "Donation",
-}
-
-export type WealthSource = {
-    type: WealthSourceType;
-    amount: number;
-};
-
-export enum InvestmentExpType {
-    LESS_THAN_5_YEARS = "< 5 years",
-    BETWEEN_5_AND_10_YEARS = "> 5 and < 10 years",
-    MORE_THAN_10_YEARS = "> 10 years",
-}
-
-export enum InvestmentRiskToleranceType {
-    TEN_PERCENT = "10%",
-    THIRTY_PERCENT = "30%",
-    ALL_IN = "All-in",
-}
-
-export type Investment = {
-    experienceType: InvestmentExpType;
-    riskToleranceType: InvestmentRiskToleranceType;
-};
-
-export type FinancialStatusFormValues = {
-    incomes: Income[];
-    basicInformation: BasicInfomation;
-    contactInformation: ContactInformation;
-    identificationDocuments: IdentificationDocument[];
-    occupations: Occupation[];
-    assets: Asset[];
-    liabilities: Liability[];
-    wealthSources: WealthSource[];
-    investment: Investment;
-    totalIncomeAmount: number;
-    totalAssetAmount: number;
-    totalLiabilityAmount: number;
-    totalWealthSourceAmount: number;
 };
 
 export type PersonalInformation = {
@@ -176,3 +98,117 @@ export type PersonalInformation = {
 };
 
 export interface GetPersonalInformationResponse extends ApiResponse<PersonalInformation> {}
+
+export type BasicInformationDTO = {
+    firstName: string;
+    lastName: string;
+    middleName?: string;
+    dateOfBirth: string;
+};
+
+export type ContactAddressDTO = {
+    country: string;
+    city: string;
+    street: string;
+    postalCode?: string;
+    type: ContactAddressType;
+};
+
+export type ContactEmailDTO = {
+    address: string;
+    type: ContactPurposeType;
+    isPreferred: boolean;
+};
+
+export type ContactPhoneDTO = {
+    number: string;
+    type: ContactPurposeType;
+    isPreferred: boolean;
+};
+
+export type ContactInformationDTO = {
+    addresses: ContactAddressDTO[];
+    emails: ContactEmailDTO[];
+    phones: ContactPhoneDTO[];
+};
+
+export type IdentificationDocumentDTO = {
+    type: IdentificationDocumentType;
+    expiryDate: string;
+    fileUrl: string;
+};
+
+export type OccupationDTO = {
+    title: OccupationTitle;
+    fromDate: string;
+    toDate: string;
+};
+
+export type PersonalInformationDTO = {
+    contactInformation: ContactInformationDTO;
+    basicInformation: BasicInformationDTO;
+    identificationDocuments: IdentificationDocumentDTO[];
+    occupations: OccupationDTO[];
+};
+
+export interface GetPersonalInfoDetailsResponse extends ApiResponse<PersonalInformationDTO> {}
+
+export interface UpdatePersonalInfoDetailsRequest {
+    userId: string;
+    personalInfoDetails: PersonalInforDetailsFormValues;
+}
+
+export interface UpdatePersonalInfoDetailsResponse extends ApiResponse<PersonalInformationDTO> {}
+
+export function toEmailsFormValues(emailDTOs: ContactEmailDTO[]): ContactEmail[] {
+    return emailDTOs.map((emailDTO) => ({
+        address: emailDTO.address,
+        isPreferred: toPreferContactOption(emailDTO.isPreferred),
+        type: emailDTO.type,
+    }));
+}
+
+export function toPhonesFormValues(phoneDTOs: ContactPhoneDTO[]): ContactPhone[] {
+    return phoneDTOs.map((phoneDTO) => ({
+        number: phoneDTO.number,
+        isPreferred: toPreferContactOption(phoneDTO.isPreferred),
+        type: phoneDTO.type,
+    }));
+}
+
+export function toBasicInformationFormValue(basicInfoDTO: BasicInformationDTO): BasicInfomation {
+    return {
+        firstName: basicInfoDTO.firstName,
+        lastName: basicInfoDTO.lastName,
+        middleName: basicInfoDTO.middleName,
+        dateOfBirth: basicInfoDTO.dateOfBirth,
+        age: "",
+    };
+}
+
+export function toDocumentsFormValues(documentDTOs: IdentificationDocumentDTO[]): IdentificationDocument[] {
+    return documentDTOs.map((documentDTO) => ({
+        type: documentDTO.type,
+        expiryDate: documentDTO.expiryDate,
+        file: null,
+    }));
+}
+
+export function toPersonalInfoDetailsFormValues(
+    personalInfoDTO: PersonalInformationDTO,
+): PersonalInforDetailsFormValues {
+    return {
+        contactInformation: {
+            addresses: personalInfoDTO.contactInformation.addresses,
+            emails: toEmailsFormValues(personalInfoDTO.contactInformation.emails),
+            phones: toPhonesFormValues(personalInfoDTO.contactInformation.phones),
+        },
+        basicInformation: toBasicInformationFormValue(personalInfoDTO.basicInformation),
+        identificationDocuments: toDocumentsFormValues(personalInfoDTO.identificationDocuments),
+        occupations: personalInfoDTO.occupations,
+    };
+}
+
+function toPreferContactOption(value: boolean): PreferContactOption {
+    return value ? PreferContactOption.YES : PreferContactOption.NO;
+}

@@ -1,10 +1,11 @@
-import { Button, Spinner } from "flowbite-react";
+import { Button } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import LoadingSpinner from "../../../components/Spinner";
 import { useGetPersonalInformationQuery } from "../../../redux/features/user.api.slice";
 import { useCurrentUserContext } from "../../../shared/CurrentUserProvider";
-import LoadingSpinner from "../../../components/Spinner";
+import { UserRole } from "../../../models/user.model";
 
 const DEFAULT_USER_AVATAR_URL = "/images/users/bonnie-green-2x.png";
 const MAX_AVATAR_SIZE_IN_KB = 4000;
@@ -388,7 +389,9 @@ const PersonalInformation = () => {
                             </fieldset>
                             <div className="mt-6 flex gap-2">
                                 <Link to="/user/1/pi/edit">
-                                    <Button className="btn-primary">Edit</Button>
+                                    <Button className="btn-primary">
+                                        {currentUser?.role === UserRole.CLIENT ? "Edit" : "Details"}
+                                    </Button>
                                 </Link>
                                 <Link to="/user/1/kyc/edit">
                                     <Button className="btn-primary">KYC</Button>

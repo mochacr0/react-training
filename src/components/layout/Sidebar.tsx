@@ -16,12 +16,6 @@ const menuItems: MenuItem[] = [
         icon: "/icons/settings.svg",
         roles: [UserRole.CLIENT],
     },
-    {
-        name: "My KYC",
-        url: "/user/1/kyc",
-        icon: "/icons/settings.svg",
-        roles: [UserRole.CLIENT],
-    },
 
     {
         name: "Submit Review",

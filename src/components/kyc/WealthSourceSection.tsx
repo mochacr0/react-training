@@ -1,7 +1,7 @@
 import { Button, Select, TextInput } from "flowbite-react";
 import { FieldArray, FormikValues, useFormikContext } from "formik";
 import { useEffect } from "react";
-import { WealthSource, WealthSourceType } from "../../models/profile.model";
+import { WealthSource, WealthSourceType } from "../../models/kyc.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 import PanelContainer from "../profile/PanelContainer";
 
