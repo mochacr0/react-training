@@ -24,7 +24,7 @@ const AssetSection = () => {
 
     return (
         <div className="panel mb-6">
-            <h4 className="mb-4 text-lg font-medium text-primary-900">Assets (A)</h4>
+            <h4 className="mb-4 text-lg font-medium text-primary-900">Assets (B)</h4>
             <FieldArray
                 name="assets"
                 render={(arrayHelpers) => {

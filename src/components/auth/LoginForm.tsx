@@ -1,16 +1,14 @@
 import { Button, Checkbox, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
-import { useFormValidationUtils } from "../../shared/hooks/useFormValidationUtils";
-import { findUserByEmail } from "../../shared/data/users";
-import { useCurrentUserContext } from "../../shared/CurrentUserProvider";
-import { shouldDisableButton } from "../../shared/utils";
+import { LoginRequest } from "../../models/auth.model";
 import { UserRole } from "../../models/user.model";
 import { useLoginMutation } from "../../redux/features/auth.api.slice";
-import { LoginRequest } from "../../models/auth.model";
+import { useCurrentUserContext } from "../../shared/CurrentUserProvider";
+import { useFormValidationUtils } from "../../shared/hooks/useFormValidationUtils";
+import { shouldDisableButton } from "../../shared/utils";
 
 type LoginFormValues = {
     email: string;

@@ -50,7 +50,7 @@ const PersonalInformationForm = () => {
         useState<PersonalInforDetailsFormValues>(defaultInitialFormValues);
     const [updatePersonalInfoDetails, updatePersonalInfoDetailsMutation] = useUpdatePersonalInfoDtailsMutation();
 
-    const personalInfoDetails = data?.data;
+    const personalInfoDetailsDTO = data?.data;
 
     async function handleSubmit(
         values: PersonalInforDetailsFormValues,
@@ -77,17 +77,17 @@ const PersonalInformationForm = () => {
     }
 
     useEffect(() => {
-        if (!personalInfoDetails) {
+        if (!personalInfoDetailsDTO) {
             return;
         }
-        const formValues = toPersonalInfoDetailsFormValues(personalInfoDetails);
+        const formValues = toPersonalInfoDetailsFormValues(personalInfoDetailsDTO);
         setInitialFormValues(formValues);
-    }, [personalInfoDetails]);
+    }, [personalInfoDetailsDTO]);
 
     return (
         <div className="mx-4 my-6 max-w-5xl rounded-lg bg-white p-6 shadow-md">
             <h2 className="text-center text-2xl font-bold text-primary-900">Personal Information</h2>
-            {isLoading || !personalInfoDetails ? (
+            {isLoading ? (
                 <LoadingSpinner />
             ) : (
                 <Formik

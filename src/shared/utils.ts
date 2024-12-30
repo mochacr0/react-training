@@ -1,4 +1,5 @@
 import { FormikProps } from "formik";
+import { HasAmount } from "../models/kyc.model";
 
 export function isEmptyObject(obj: any): boolean {
     return obj && typeof obj === "object" && Object.keys(obj).length === 0;
@@ -14,22 +15,8 @@ export function capitalize(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-function extractFileName(url: string) {
-    const urlObject = new URL(url);
-    const pathname = urlObject.pathname;
-    const fileName = pathname.substring(pathname.lastIndexOf("/") + 1);
-    return fileName;
-}
-
-export async function urlToFile(url: string) {
-    const fileName = extractFileName(url);
-    const response = await fetch(url);
-
-    if (!response.ok) {
-        throw new Error(`Failed to fetch file: ${response.statusText}`);
-    }
-
-    const blob = await response.blob();
-    const file = new File([blob], fileName, { type: blob.type });
-    return file;
+export function getTotalAmount(values: HasAmount[]) {
+    return values.reduce((totalAmount: number, value: HasAmount) => {
+        return totalAmount + value.amount;
+    }, 0);
 }

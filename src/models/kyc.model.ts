@@ -1,4 +1,14 @@
-import { BasicInfomation, ContactInformation, IdentificationDocument, Occupation } from "./profile.model";
+import { getTotalAmount } from "../shared/utils";
+import { ApiResponse } from "./common.model";
+import {
+    PersonalInforDetailsFormValues,
+    PersonalInformationDTO,
+    toPersonalInfoDetailsFormValues,
+} from "./profile.model";
+
+export interface HasAmount {
+    amount: number;
+}
 
 export enum IncomeType {
     SALARY = "Salary",
@@ -6,10 +16,9 @@ export enum IncomeType {
     OTHERS = "Others",
 }
 
-export type Income = {
+export interface Income extends HasAmount {
     type: IncomeType;
-    amount: number;
-};
+}
 
 export enum AssetType {
     BOND = "Bond",
@@ -18,10 +27,9 @@ export enum AssetType {
     OTHERS = "Others",
 }
 
-export type Asset = {
+export interface Asset extends HasAmount {
     type: AssetType;
-    amount: number;
-};
+}
 
 export enum LiabilityType {
     PERSONAL_LOAN = "Personal Loan",
@@ -29,20 +37,18 @@ export enum LiabilityType {
     OTHERS = "Others",
 }
 
-export type Liability = {
+export interface Liability extends HasAmount {
     type: LiabilityType;
-    amount: number;
-};
+}
 
 export enum WealthSourceType {
     INHERITANCE = "Inheritance",
     DONATION = "Donation",
 }
 
-export type WealthSource = {
+export interface WealthSource extends HasAmount {
     type: WealthSourceType;
-    amount: number;
-};
+}
 
 export enum InvestmentExpType {
     LESS_THAN_5_YEARS = "< 5 years",
@@ -61,12 +67,8 @@ export type Investment = {
     riskToleranceType: InvestmentRiskToleranceType;
 };
 
-export type FinancialStatusFormValues = {
+export interface FinancialStatusFormValues extends PersonalInforDetailsFormValues {
     incomes: Income[];
-    basicInformation: BasicInfomation;
-    contactInformation: ContactInformation;
-    identificationDocuments: IdentificationDocument[];
-    occupations: Occupation[];
     assets: Asset[];
     liabilities: Liability[];
     wealthSources: WealthSource[];
@@ -75,4 +77,61 @@ export type FinancialStatusFormValues = {
     totalAssetAmount: number;
     totalLiabilityAmount: number;
     totalWealthSourceAmount: number;
+}
+
+export type IncomeDTO = {
+    type: IncomeType;
+    amount: number;
 };
+
+export type AssetDTO = {
+    type: AssetType;
+    amount: number;
+};
+
+export type LiabilityDTO = {
+    type: LiabilityType;
+    amount: number;
+};
+
+export type WealthSourceDTO = {
+    type: WealthSourceType;
+    amount: number;
+};
+
+export type InvestmentDTO = {
+    experienceType: InvestmentExpType;
+    riskToleranceType: InvestmentRiskToleranceType;
+};
+
+export interface FinancialStatusDTO extends PersonalInformationDTO {
+    incomes: IncomeDTO[];
+    assets: AssetDTO[];
+    liabilities: LiabilityDTO[];
+    wealthSources: WealthSourceDTO[];
+    investment: InvestmentDTO;
+}
+
+export interface GetFinancialStatusResponse extends ApiResponse<FinancialStatusDTO> {}
+
+export interface UpdateFinancialStatusRequest {
+    userId: string;
+    financialStatus: FinancialStatusFormValues;
+}
+
+export interface UpdateFinancialStatusResponse extends ApiResponse<FinancialStatusDTO> {}
+
+export function toFinancialStatusFormValues(financialStatusDTO: FinancialStatusDTO): FinancialStatusFormValues {
+    return {
+        ...toPersonalInfoDetailsFormValues(financialStatusDTO),
+        incomes: financialStatusDTO.incomes,
+        assets: financialStatusDTO.assets,
+        liabilities: financialStatusDTO.liabilities,
+        wealthSources: financialStatusDTO.wealthSources,
+        investment: financialStatusDTO.investment,
+        totalAssetAmount: getTotalAmount(financialStatusDTO.assets),
+        totalIncomeAmount: getTotalAmount(financialStatusDTO.incomes),
+        totalLiabilityAmount: getTotalAmount(financialStatusDTO.liabilities),
+        totalWealthSourceAmount: getTotalAmount(financialStatusDTO.wealthSources),
+    };
+}
