@@ -23,6 +23,8 @@ import { financialStatusSchema } from "./kyc.schema";
 import LiabilitySection from "./LiabilitySection";
 import NetWorthSection from "./NetWorthSection";
 import WealthSourceSection from "./WealthSourceSection";
+import { useCurrentUserContext } from "../../shared/CurrentUserProvider";
+import { useParams } from "react-router";
 
 const defaultInitialFormValues: FinancialStatusFormValues = {
     basicInformation: {
@@ -60,7 +62,8 @@ const defaultInitialFormValues: FinancialStatusFormValues = {
 };
 
 const KYCForm = () => {
-    const { data, isLoading } = useGetFinancialStatusQuery("1234");
+    const { clientId } = useParams();
+    const { data, isLoading } = useGetFinancialStatusQuery(clientId ?? "");
     const [initialFormValues, setInitialFormValues] = useState<FinancialStatusFormValues>(defaultInitialFormValues);
     const [updateFinancialStatus, updateFinancialStatusMutation] = useUpdateFinancialStatusMutation();
 

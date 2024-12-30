@@ -16,7 +16,7 @@ const profileAPISlice = baseAPISlice.injectEndpoints({
         }),
         updatePersonalInfoDtails: builder.mutation<UpdatePersonalInfoDetailsResponse, UpdatePersonalInfoDetailsRequest>(
             {
-                query: ({ userId, personalInfoDetails }) => ({
+                query: ({ clientId: userId, body: personalInfoDetails }) => ({
                     url: "/3e52-e686-411b-b70b",
                     method: "PUT",
                     body: personalInfoDetails,

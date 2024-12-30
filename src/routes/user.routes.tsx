@@ -1,7 +1,7 @@
 import { RouteObject } from "react-router";
 import KYCForm from "../components/kyc/KYCForm";
 import PersonalInformationForm from "../components/profile/PersonalInformationForm";
-import SubmitReview from "../components/review/SubmitReview";
+import Submissions from "../components/submission/Submissions";
 import PersonalInformation from "../pages/user/personal-information/PersonalInformation";
 import User from "../pages/user/user";
 import RequiresAuth from "../components/auth/RequiresAuth";
@@ -14,7 +14,7 @@ const userRoutes: RouteObject[] = [
         children: [
             // User Routes
             {
-                path: ":id/pi",
+                path: ":clientId/pi",
                 element: (
                     <RequiresAuth allowedRoles={[UserRole.CLIENT, UserRole.OFFICER]}>
                         <PersonalInformation />
@@ -22,7 +22,7 @@ const userRoutes: RouteObject[] = [
                 ),
             },
             {
-                path: ":id/pi/edit",
+                path: ":clientId/pi/edit",
                 element: (
                     <RequiresAuth allowedRoles={[UserRole.CLIENT, UserRole.OFFICER]}>
                         <PersonalInformationForm />
@@ -30,7 +30,7 @@ const userRoutes: RouteObject[] = [
                 ),
             },
             {
-                path: ":id/kyc/edit",
+                path: ":clientId/kyc/edit",
                 element: (
                     <RequiresAuth allowedRoles={[UserRole.CLIENT, UserRole.OFFICER]}>
                         <KYCForm />
@@ -43,7 +43,7 @@ const userRoutes: RouteObject[] = [
                 path: "submit-review",
                 element: (
                     <RequiresAuth allowedRoles={[UserRole.OFFICER]}>
-                        <SubmitReview />
+                        <Submissions />
                     </RequiresAuth>
                 ),
             },

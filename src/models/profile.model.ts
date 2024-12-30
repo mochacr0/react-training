@@ -154,8 +154,8 @@ export type PersonalInformationDTO = {
 export interface GetPersonalInfoDetailsResponse extends ApiResponse<PersonalInformationDTO> {}
 
 export interface UpdatePersonalInfoDetailsRequest {
-    userId: string;
-    personalInfoDetails: PersonalInforDetailsFormValues;
+    clientId: string;
+    body: PersonalInforDetailsFormValues;
 }
 
 export interface UpdatePersonalInfoDetailsResponse extends ApiResponse<PersonalInformationDTO> {}

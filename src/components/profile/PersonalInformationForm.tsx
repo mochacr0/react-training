@@ -1,6 +1,7 @@
 import { Button } from "flowbite-react";
 import { Form, Formik, FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import {
     IdentificationDocumentType,
@@ -12,7 +13,6 @@ import {
     useGetPersonalInfoDetailsQuery,
     useUpdatePersonalInfoDtailsMutation,
 } from "../../redux/features/profile.api.slice";
-import { useCurrentUserContext } from "../../shared/CurrentUserProvider";
 import LoadingSpinner from "../Spinner";
 import BasicInformationSection from "./BasicInformationSection";
 import ContactInformationSection from "./contact/ContactInformationSection";
@@ -44,8 +44,8 @@ const defaultInitialFormValues: PersonalInforDetailsFormValues = {
 };
 
 const PersonalInformationForm = () => {
-    const { currentUser } = useCurrentUserContext();
-    const { data, isLoading } = useGetPersonalInfoDetailsQuery(currentUser?.id ?? "");
+    const { clientId } = useParams();
+    const { data, isLoading } = useGetPersonalInfoDetailsQuery(clientId ?? "");
     const [initialFormValues, setInitialFormValues] =
         useState<PersonalInforDetailsFormValues>(defaultInitialFormValues);
     const [updatePersonalInfoDetails, updatePersonalInfoDetailsMutation] = useUpdatePersonalInfoDtailsMutation();
@@ -58,8 +58,8 @@ const PersonalInformationForm = () => {
     ) {
         try {
             const updatePersonalInfoDetailsRequest: UpdatePersonalInfoDetailsRequest = {
-                userId: currentUser?.id ?? "",
-                personalInfoDetails: values,
+                clientId: clientId ?? "",
+                body: values,
             };
             const response = await updatePersonalInfoDetails(updatePersonalInfoDetailsRequest).unwrap();
             if (response.errors) {
