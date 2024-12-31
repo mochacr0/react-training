@@ -2,9 +2,9 @@ import { Button, FileInput, Select, TextInput } from "flowbite-react";
 import { ArrayHelpers, FieldArray, FormikValues, useFormikContext } from "formik";
 import { toast } from "react-toastify";
 import { IdentificationDocumentType } from "../../models/profile.model";
-import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
+import { getValidationProps } from "../../hooks/useFormValidationUtils";
 import PanelContainer from "./PanelContainer";
-import { useDisabledForm } from "../../shared/providers/DisabledFormProvider";
+import { useDisabledForm } from "../../providers/DisabledFormProvider";
 
 const IdentificationDocumentSection = () => {
     const formik = useFormikContext<FormikValues>();

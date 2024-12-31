@@ -12,11 +12,10 @@ import {
 } from "../../models/kyc.model";
 import { IdentificationDocumentType } from "../../models/profile.model";
 import { useGetFinancialStatusQuery, useUpdateFinancialStatusMutation } from "../../redux/features/kyc.api.slice";
-import BasicInformationSection from "../profile/BasicInformationSection";
-import ContactInformationSection from "../profile/contact/ContactInformationSection";
-import IdentificationDocumentSection from "../profile/IdentificationDocumentSection";
-import OccupationSection from "../profile/OccupationSection";
-import LoadingSpinner from "../Spinner";
+import BasicInformationSection from "../personal-information/BasicInformationSection";
+import IdentificationDocumentSection from "../personal-information/IdentificationDocumentSection";
+import OccupationSection from "../personal-information/OccupationSection";
+import LoadingSpinner from "../common/LoadingSpinner";
 import AssetSection from "./AssetSection";
 import IncomeSection from "./IncomeSection";
 import InvestmentSection from "./InvestmentSection";
@@ -24,9 +23,10 @@ import { financialStatusSchema } from "./kyc.schema";
 import LiabilitySection from "./LiabilitySection";
 import NetWorthSection from "./NetWorthSection";
 import WealthSourceSection from "./WealthSourceSection";
-import { useCurrentUserContext } from "../../shared/providers/CurrentUserProvider";
-import { useDisabledForm } from "../../shared/providers/DisabledFormProvider";
+import { useCurrentUserContext } from "../../providers/CurrentUserProvider";
+import { useDisabledForm } from "../../providers/DisabledFormProvider";
 import { UserRole } from "../../models/user.model";
+import ContactInformationSection from "../personal-information/ContactInformationSection";
 
 const defaultInitialFormValues: FinancialStatusFormValues = {
     basicInformation: {

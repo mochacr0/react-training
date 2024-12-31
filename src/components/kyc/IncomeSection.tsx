@@ -1,10 +1,10 @@
 import { Button, Select, TextInput } from "flowbite-react";
 import { FieldArray, FormikValues, useFormikContext } from "formik";
-import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
+import { getValidationProps } from "../../hooks/useFormValidationUtils";
 import { Income, IncomeType } from "../../models/kyc.model";
-import PanelContainer from "../profile/PanelContainer";
+import PanelContainer from "../personal-information/PanelContainer";
 import { useEffect } from "react";
-import { useDisabledForm } from "../../shared/providers/DisabledFormProvider";
+import { useDisabledForm } from "../../providers/DisabledFormProvider";
 
 const IncomeSection = () => {
     const formik = useFormikContext<FormikValues>();

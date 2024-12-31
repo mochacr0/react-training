@@ -2,10 +2,10 @@ import { Button } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import LoadingSpinner from "../../../components/Spinner";
-import { useGetPersonalInformationQuery } from "../../../redux/features/user.api.slice";
-import { useCurrentUserContext } from "../../../shared/providers/CurrentUserProvider";
-import { UserRole } from "../../../models/user.model";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
+import { UserRole } from "../../models/user.model";
+import { useCurrentUserContext } from "../../providers/CurrentUserProvider";
+import { useGetPersonalInformationQuery } from "../../redux/features/user.api.slice";
 
 const DEFAULT_USER_AVATAR_URL = "/images/users/bonnie-green-2x.png";
 const MAX_AVATAR_SIZE_IN_KB = 4000;

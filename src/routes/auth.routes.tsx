@@ -1,6 +1,6 @@
 import { RouteObject } from "react-router";
-import LoggedInUserRouter from "../components/auth/LoggedInUserRouter";
-import RequiresAuth from "../components/auth/RequiresAuth";
+import LoggedInUserRouter from "../components/common/LoggedInUserRouter";
+import RequiresAuth from "../components/common/RequiresAuth";
 import LoginPage from "../pages/auth/login/LoginPage";
 import LogoutPage from "../pages/auth/logout/LogoutPage";
 import ResetPasswordPage from "../pages/auth/reset-password/ResetPasswordPage";

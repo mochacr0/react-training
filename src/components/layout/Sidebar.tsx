@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { UserRole } from "../../models/user.model";
-import { useCurrentUserContext } from "../../shared/providers/CurrentUserProvider";
+import { useCurrentUserContext } from "../../providers/CurrentUserProvider";
 
 interface MenuItem {
     name: string;

@@ -4,7 +4,7 @@ import {
     contactInformationSchema,
     identificationDocumentsSchema,
     occupationSchema,
-} from "../profile/profile.schema";
+} from "../personal-information/profile.schema";
 
 const singleIncomeSchema = Yup.object().shape({
     type: Yup.string().required("Income type is required"),

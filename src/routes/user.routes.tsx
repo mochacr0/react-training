@@ -1,16 +1,14 @@
 import { RouteObject } from "react-router";
-import RequiresAuth from "../components/auth/RequiresAuth";
+import RequiresAuth from "../components/common/RequiresAuth";
 import Submissions from "../components/submission/Submissions";
 import { UserRole } from "../models/user.model";
-import EditKYC from "../pages/user/kyc/EditKYC";
-import EditPersonalInformation from "../pages/user/personal-information/EditPersonalInformation";
-import PersonalInformation from "../pages/user/personal-information/PersonalInformation";
-import User from "../pages/user/user";
+import EditKYC from "../pages/kyc/EditKYC";
+import PersonalInformation from "../pages/personal-information/PersonalInformation";
+import EditPersonalInformation from "../pages/personal-information/EditPersonalInformation";
 
 const userRoutes: RouteObject[] = [
     {
         path: "user",
-        element: <User />,
         children: [
             // User Routes
             {

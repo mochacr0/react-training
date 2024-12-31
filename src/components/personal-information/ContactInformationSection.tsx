@@ -1,6 +1,6 @@
-import ContactAddressPanel from "./ContactAddressPanel";
-import ContactEmailPanel from "./ContactEmailPanel";
-import ContactPhonePanel from "./ContactPhonePanel";
+import ContactAddressPanel from "./contact/ContactAddressPanel";
+import ContactEmailPanel from "./contact/ContactEmailPanel";
+import ContactPhonePanel from "./contact/ContactPhonePanel";
 
 const ContactInformationSection = () => {
     return (

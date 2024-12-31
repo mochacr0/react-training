@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
-import { useFormValidationUtils } from "../../../shared/hooks/useFormValidationUtils";
-import { useSignUpMutation } from "../../../redux/features/auth.api.slice";
 import { SignUpRequest } from "../../../models/auth.model";
+import { useSignUpMutation } from "../../../redux/features/auth.api.slice";
+import { getValidationProps } from "../../../hooks/useFormValidationUtils";
 
 type SignupFormValues = {
     email: string;
@@ -44,7 +44,6 @@ const SignUpForm = () => {
         onSubmit: handleSubmit,
     });
     const [acceptTerms, setAcceptTerms] = useState(false);
-    const { getErrorFieldColor, getErrorFieldMessage } = useFormValidationUtils(formik);
 
     async function handleSubmit(values: SignupFormValues) {
         if (!acceptTerms) {
@@ -81,15 +80,13 @@ const SignUpForm = () => {
                     Your email
                 </label>
                 <TextInput
+                    id="email"
                     type="email"
-                    name="email"
                     placeholder="name@company.com"
                     required
-                    color={getErrorFieldColor("email")}
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    helperText={getErrorFieldMessage("email")}
                     disabled={signUpMutation.isLoading}
+                    {...formik.getFieldProps("email")}
+                    {...getValidationProps("email", formik)}
                 />
             </div>
             <div>
@@ -97,34 +94,30 @@ const SignUpForm = () => {
                     Your password
                 </label>
                 <TextInput
+                    id="password"
                     type="password"
-                    name="password"
                     placeholder="••••••••"
                     required
-                    color={getErrorFieldColor("password")}
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    helperText={getErrorFieldMessage("password")}
                     disabled={signUpMutation.isLoading}
+                    {...formik.getFieldProps("password")}
+                    {...getValidationProps("password", formik)}
                 />
             </div>
             <div>
                 <label
-                    htmlFor="confirm-password"
+                    htmlFor="confirmPassword"
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
                     Confirm password
                 </label>
                 <TextInput
+                    id="confirmPassword"
                     type="password"
-                    name="confirmPassword"
                     placeholder="••••••••"
                     required
-                    color={getErrorFieldColor("confirmPassword")}
-                    value={formik.values.confirmPassword}
-                    onChange={formik.handleChange}
-                    helperText={getErrorFieldMessage("confirmPassword")}
                     disabled={signUpMutation.isLoading}
+                    {...formik.getFieldProps("confirmPassword")}
+                    {...getValidationProps("confirmPassword", formik)}
                 />
             </div>
             <div className="flex items-start">
@@ -152,7 +145,7 @@ const SignUpForm = () => {
                 size="lg"
                 color="blue"
                 type="submit"
-                disabled={!formik.dirty || signUpMutation.isLoading}
+                disabled={signUpMutation.isLoading}
                 isProcessing={signUpMutation.isLoading}
             >
                 Create account

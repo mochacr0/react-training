@@ -1,5 +1,5 @@
-import PersonalInformationForm from "../../../components/profile/PersonalInformationForm";
-import { DisabledFormProvider } from "../../../shared/providers/DisabledFormProvider";
+import PersonalInformationForm from "../../components/personal-information/PersonalInformationForm";
+import { DisabledFormProvider } from "../../providers/DisabledFormProvider";
 
 const EditPersonalInformation = () => {
     return (

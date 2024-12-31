@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { TextInput } from "flowbite-react";
 import { FormikValues, useFormikContext } from "formik";
-import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
+import { getValidationProps } from "../../hooks/useFormValidationUtils";
 
 const BasicInformationSection = () => {
     const formik = useFormikContext<FormikValues>();

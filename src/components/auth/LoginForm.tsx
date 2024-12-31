@@ -6,9 +6,8 @@ import * as Yup from "yup";
 import { LoginRequest } from "../../models/auth.model";
 import { UserRole } from "../../models/user.model";
 import { useLoginMutation } from "../../redux/features/auth.api.slice";
-import { useCurrentUserContext } from "../../shared/providers/CurrentUserProvider";
-import { useFormValidationUtils } from "../../shared/hooks/useFormValidationUtils";
-import { shouldDisableButton } from "../../shared/utils";
+import { getValidationProps } from "../../hooks/useFormValidationUtils";
+import { useCurrentUserContext } from "../../providers/CurrentUserProvider";
 
 type LoginFormValues = {
     email: string;
@@ -40,7 +39,6 @@ const LoginForm = () => {
         onSubmit: handleSubmit,
     });
     const [login, loginMutation] = useLoginMutation();
-    const { getErrorFieldColor, getErrorFieldMessage } = useFormValidationUtils(formik);
     const { setCurrentUser } = useCurrentUserContext();
 
     async function handleSubmit(values: LoginFormValues) {
@@ -83,15 +81,11 @@ const LoginForm = () => {
                 </label>
                 <TextInput
                     type="email"
-                    name="email"
                     placeholder="name@company.com"
                     required
-                    color={getErrorFieldColor("email")}
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    helperText={getErrorFieldMessage("email")}
                     disabled={loginMutation.isLoading}
+                    {...formik.getFieldProps("email")}
+                    {...getValidationProps("email", formik)}
                 />
             </div>
             <div>
@@ -100,17 +94,13 @@ const LoginForm = () => {
                 </label>
                 <TextInput
                     type="password"
-                    name="password"
                     placeholder="••••••••"
                     required
                     minLength={12}
                     maxLength={16}
-                    color={getErrorFieldColor("password")}
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    helperText={getErrorFieldMessage("password")}
                     disabled={loginMutation.isLoading}
+                    {...formik.getFieldProps("password")}
+                    {...getValidationProps("password", formik)}
                 />
             </div>
             <div className="flex items-start">
@@ -139,7 +129,7 @@ const LoginForm = () => {
                 size="lg"
                 color="blue"
                 type="submit"
-                disabled={shouldDisableButton(formik, loginMutation.isLoading)}
+                disabled={loginMutation.isLoading}
                 isProcessing={loginMutation.isLoading}
             >
                 Login to my account

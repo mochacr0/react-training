@@ -9,19 +9,19 @@ import {
     toPersonalInfoDetailsFormValues,
     UpdatePersonalInfoDetailsRequest,
 } from "../../models/profile.model";
+import { UserRole } from "../../models/user.model";
+import { useCurrentUserContext } from "../../providers/CurrentUserProvider";
+import { useDisabledForm } from "../../providers/DisabledFormProvider";
 import {
     useGetPersonalInfoDetailsQuery,
     useUpdatePersonalInfoDtailsMutation,
 } from "../../redux/features/profile.api.slice";
-import LoadingSpinner from "../Spinner";
+import LoadingSpinner from "../common/LoadingSpinner";
 import BasicInformationSection from "./BasicInformationSection";
-import ContactInformationSection from "./contact/ContactInformationSection";
+import ContactInformationSection from "./ContactInformationSection";
 import IdentificationDocumentSection from "./IdentificationDocumentSection";
-import OccupationSection from "./OccupationSection";
 import { personalInformationSchema } from "./profile.schema";
-import { useDisabledForm } from "../../shared/providers/DisabledFormProvider";
-import { useCurrentUserContext } from "../../shared/providers/CurrentUserProvider";
-import { UserRole } from "../../models/user.model";
+import OccupationSection from "./OccupationSection";
 
 const defaultInitialFormValues: PersonalInforDetailsFormValues = {
     contactInformation: {
@@ -55,8 +55,6 @@ const PersonalInformationForm = () => {
     const { currentUser } = useCurrentUserContext();
     const { isFormDisabled, updateIsFormDisabled } = useDisabledForm();
 
-    const personalInfoDetailsDTO = data?.data;
-
     useEffect(() => {
         if (currentUser?.role === UserRole.OFFICER) {
             updateIsFormDisabled(true);
@@ -64,12 +62,14 @@ const PersonalInformationForm = () => {
     }, [currentUser, updateIsFormDisabled]);
 
     useEffect(() => {
+        const personalInfoDetailsDTO = data?.data;
         if (!personalInfoDetailsDTO) {
             return;
         }
+
         const formValues = toPersonalInfoDetailsFormValues(personalInfoDetailsDTO);
         setInitialFormValues(formValues);
-    }, [personalInfoDetailsDTO]);
+    }, [data]);
 
     async function handleSubmit(
         values: PersonalInforDetailsFormValues,
@@ -118,7 +118,9 @@ const PersonalInformationForm = () => {
                                     type="submit"
                                     className="btn-primary rounded-md px-4 py-2"
                                     isProcessing={updatePersonalInfoDetailsMutation.isLoading}
-                                    disabled={updatePersonalInfoDetailsMutation.isLoading || !formik.dirty}
+                                    disabled={
+                                        updatePersonalInfoDetailsMutation.isLoading || !formik.dirty || isFormDisabled
+                                    }
                                 >
                                     Submit
                                 </Button>

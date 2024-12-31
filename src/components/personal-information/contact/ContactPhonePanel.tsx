@@ -1,10 +1,10 @@
 import { Button, Select, TextInput } from "flowbite-react";
 import { FieldArray, FormikValues, useFormikContext } from "formik";
 import { ContactPhone, ContactPurposeType, PreferContactOption } from "../../../models/profile.model";
-import { getValidationProps } from "../../../shared/hooks/useFormValidationUtils";
-import { capitalize } from "../../../shared/utils";
+import { getValidationProps } from "../../../hooks/useFormValidationUtils";
+import { capitalize } from "../../../utils/utils";
 import PanelContainer from "../PanelContainer";
-import { useDisabledForm } from "../../../shared/providers/DisabledFormProvider";
+import { useDisabledForm } from "../../../providers/DisabledFormProvider";
 
 const ContactPhonePanel = () => {
     const formik = useFormikContext<FormikValues>();

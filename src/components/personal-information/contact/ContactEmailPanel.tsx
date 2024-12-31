@@ -1,9 +1,9 @@
 import { Button, Select, TextInput } from "flowbite-react";
 import { FieldArray, FormikValues, useFormikContext } from "formik";
 import { ContactEmail, ContactPurposeType, PreferContactOption } from "../../../models/profile.model";
-import { getValidationProps } from "../../../shared/hooks/useFormValidationUtils";
+import { getValidationProps } from "../../../hooks/useFormValidationUtils";
 import PanelContainer from "../PanelContainer";
-import { useDisabledForm } from "../../../shared/providers/DisabledFormProvider";
+import { useDisabledForm } from "../../../providers/DisabledFormProvider";
 
 const ContactEmailPanel = () => {
     const formik = useFormikContext<FormikValues>();

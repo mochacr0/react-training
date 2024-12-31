@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { ProcessSubmissionRequest, ReviewAction, SubmitStatus } from "../../models/submission.model";
 import { useGetSubmissionsQuery, useProcessSubmissionMutation } from "../../redux/features/submission.api.slice";
-import LoadingSpinner from "../Spinner";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const submitStatusColors = {
     [SubmitStatus.ACTIVE]: "green",
@@ -111,7 +111,6 @@ const Submissions = () => {
                                                     color="green"
                                                     size="sm"
                                                     className="mr-2"
-                                                    disabled={submission.status === SubmitStatus.INACTIVE}
                                                     onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                                                         event.stopPropagation();
                                                         handleAction(submission.clientId, ReviewAction.APPROVE);
@@ -122,7 +121,6 @@ const Submissions = () => {
                                                 <Button
                                                     color="red"
                                                     size="sm"
-                                                    disabled={submission.status === SubmitStatus.INACTIVE}
                                                     onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                                                         event.stopPropagation();
                                                         handleAction(submission.clientId, ReviewAction.REJECT);

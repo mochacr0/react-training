@@ -3,7 +3,7 @@ import userRoutes from "./user.routes";
 import authRoutes from "./auth.routes";
 import DefaultLayout from "../components/layout/DefaultLayout";
 import { RouteObject } from "react-router";
-import RequiresAuth from "../components/auth/RequiresAuth";
+import RequiresAuth from "../components/common/RequiresAuth";
 import { UserRole } from "../models/user.model";
 
 const pageRoutes: RouteObject[] = [

@@ -1,5 +1,5 @@
-import KYCForm from "../../../components/kyc/KYCForm";
-import { DisabledFormProvider } from "../../../shared/providers/DisabledFormProvider";
+import KYCForm from "../../components/kyc/KYCForm";
+import { DisabledFormProvider } from "../../providers/DisabledFormProvider";
 
 const EditKYC = () => {
     return (

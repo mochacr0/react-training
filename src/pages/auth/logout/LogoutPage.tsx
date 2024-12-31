@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCurrentUserContext } from "../../../shared/providers/CurrentUserProvider";
+import { useCurrentUserContext } from "../../../providers/CurrentUserProvider";
 import { useNavigate } from "react-router";
 
 const LogoutPage = () => {

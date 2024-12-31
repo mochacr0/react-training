@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
-import { User } from "../../models/user.model";
+import { User } from "../models/user.model";
 
 type CurrentUserContextType = {
     currentUser: User | null;

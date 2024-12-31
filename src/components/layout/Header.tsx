@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
-import { useCurrentUserContext } from "../../shared/providers/CurrentUserProvider";
+import { useCurrentUserContext } from "../../providers/CurrentUserProvider";
 
 const Header = () => {
     const { currentUser } = useCurrentUserContext();
-
-    const links: Array<Record<string, string>> = [];
 
     return (
         <nav className="fixed z-30 w-full border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">

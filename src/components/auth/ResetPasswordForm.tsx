@@ -1,12 +1,11 @@
 import { Button, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
-import { useFormValidationUtils } from "../../shared/hooks/useFormValidationUtils";
-import { useResetPasswordMutation } from "../../redux/features/auth.api.slice";
 import { ResetPasswordRequest } from "../../models/auth.model";
+import { useResetPasswordMutation } from "../../redux/features/auth.api.slice";
+import { getValidationProps } from "../../hooks/useFormValidationUtils";
 
 type ResetPasswordFormProps = {
     email: string;
@@ -43,7 +42,6 @@ const ResetPasswordForm = () => {
         onSubmit: handleSubmit,
     });
     const [resetPassword, resetPasswordMutation] = useResetPasswordMutation();
-    const { getErrorFieldColor, getErrorFieldMessage } = useFormValidationUtils(formik);
 
     async function handleSubmit(values: ResetPasswordFormProps) {
         const resetPasswordRequest: ResetPasswordRequest = {
@@ -75,15 +73,13 @@ const ResetPasswordForm = () => {
                     Your email
                 </label>
                 <TextInput
+                    id="email"
                     type="email"
-                    name="email"
                     placeholder="name@company.com"
                     required
-                    color={getErrorFieldColor("email")}
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    helperText={getErrorFieldMessage("email")}
                     disabled={resetPasswordMutation.isLoading}
+                    {...formik.getFieldProps("email")}
+                    {...getValidationProps("email", formik)}
                 />
             </div>
             <div>
@@ -91,34 +87,30 @@ const ResetPasswordForm = () => {
                     New password
                 </label>
                 <TextInput
+                    id="password"
                     type="password"
-                    name="password"
                     placeholder="••••••••"
                     required
-                    color={getErrorFieldColor("password")}
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    helperText={getErrorFieldMessage("password")}
                     disabled={resetPasswordMutation.isLoading}
+                    {...formik.getFieldProps("password")}
+                    {...getValidationProps("password", formik)}
                 />
             </div>
             <div>
                 <label
-                    htmlFor="confirm-password"
+                    htmlFor="confirmPassword"
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
                     Confirm New Password
                 </label>
                 <TextInput
                     type="password"
-                    name="confirmPassword"
+                    id="confirmPassword"
                     placeholder="••••••••"
                     required
-                    color={getErrorFieldColor("confirmPassword")}
-                    value={formik.values.confirmPassword}
-                    onChange={formik.handleChange}
-                    helperText={getErrorFieldMessage("confirmPassword")}
                     disabled={resetPasswordMutation.isLoading}
+                    {...formik.getFieldProps("confirmPassword")}
+                    {...getValidationProps("confirmPassword", formik)}
                 />
             </div>
             <Button

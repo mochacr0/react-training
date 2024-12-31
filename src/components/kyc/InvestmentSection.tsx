@@ -1,6 +1,6 @@
 import { Select } from "flowbite-react";
 import { FormikValues, useFormikContext } from "formik";
-import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
+import { getValidationProps } from "../../hooks/useFormValidationUtils";
 import { InvestmentExpType, InvestmentRiskToleranceType } from "../../models/kyc.model";
 
 const InvestmentSection = () => {
