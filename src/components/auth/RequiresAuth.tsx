@@ -1,6 +1,6 @@
 import { ReactElement, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useCurrentUserContext } from "../../shared/CurrentUserProvider";
+import { useCurrentUserContext } from "../../shared/providers/CurrentUserProvider";
 import { UserRole } from "../../models/user.model";
 import { toast } from "react-toastify";
 

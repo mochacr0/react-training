@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { WealthSource, WealthSourceType } from "../../models/kyc.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 import PanelContainer from "../profile/PanelContainer";
+import { useDisabledForm } from "../../shared/providers/DisabledFormProvider";
 
 const WealthSourceSection = () => {
     const formik = useFormikContext<FormikValues>();
@@ -12,6 +13,7 @@ const WealthSourceSection = () => {
         setFieldValue,
         getFieldProps,
     } = formik;
+    const { isFormDisabled } = useDisabledForm();
 
     useEffect(() => {
         const currentTotalWealthSourceAmount = wealthSources.reduce(
@@ -107,6 +109,7 @@ const WealthSourceSection = () => {
                             )}
                             <Button
                                 className="btn-primary mt-4"
+                                disabled={isFormDisabled}
                                 onClick={() => {
                                     const newWealthSource: WealthSource = {
                                         type: WealthSourceType.INHERITANCE,

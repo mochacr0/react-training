@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Liability, LiabilityType } from "../../models/kyc.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 import PanelContainer from "../profile/PanelContainer";
+import { useDisabledForm } from "../../shared/providers/DisabledFormProvider";
 
 const LiabilitySection = () => {
     const formik = useFormikContext<FormikValues>();
@@ -12,6 +13,7 @@ const LiabilitySection = () => {
         setFieldValue,
         getFieldProps,
     } = formik;
+    const { isFormDisabled } = useDisabledForm();
 
     useEffect(() => {
         const currentTotalLiabilityAmount = liabilities.reduce((currentTotalAmount: number, asset: Liability) => {
@@ -104,6 +106,7 @@ const LiabilitySection = () => {
                             )}
                             <Button
                                 className="btn-primary mt-4"
+                                disabled={isFormDisabled}
                                 onClick={() => {
                                     const newLiability: Liability = {
                                         type: LiabilityType.PERSONAL_LOAN,
@@ -112,7 +115,7 @@ const LiabilitySection = () => {
                                     arrayHelpers.push(newLiability);
                                 }}
                             >
-                                Add Income
+                                Add Liability
                             </Button>
                         </>
                     );

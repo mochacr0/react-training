@@ -4,6 +4,7 @@ import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 import { Income, IncomeType } from "../../models/kyc.model";
 import PanelContainer from "../profile/PanelContainer";
 import { useEffect } from "react";
+import { useDisabledForm } from "../../shared/providers/DisabledFormProvider";
 
 const IncomeSection = () => {
     const formik = useFormikContext<FormikValues>();
@@ -12,6 +13,7 @@ const IncomeSection = () => {
         setFieldValue,
         getFieldProps,
     } = formik;
+    const { isFormDisabled } = useDisabledForm();
 
     useEffect(() => {
         const newTotalIncomeAmount = incomes.reduce((currentTotalAmount: number, income: Income) => {
@@ -23,7 +25,7 @@ const IncomeSection = () => {
     }, [setFieldValue, incomes, totalIncomeAmount]);
 
     return (
-        <div className="panel mb-6">
+        <div className="panel">
             <h4 className="mb-4 text-lg font-medium text-primary-900">Incomes (A)</h4>
             <FieldArray
                 name="incomes"
@@ -83,6 +85,7 @@ const IncomeSection = () => {
                             })}
                             <Button
                                 className="btn-primary"
+                                disabled={isFormDisabled}
                                 onClick={() => {
                                     const newIncome: Income = {
                                         type: IncomeType.SALARY,

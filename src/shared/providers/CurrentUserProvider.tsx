@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
-import { User } from "../models/user.model";
+import { User } from "../../models/user.model";
 
 type CurrentUserContextType = {
     currentUser: User | null;
@@ -28,7 +28,7 @@ export const CurrentUserProvider: React.FC<{ children: ReactNode }> = ({ childre
 export const useCurrentUserContext = (): CurrentUserContextType => {
     const context = useContext(CurrentUserContext);
     if (context === null) {
-        throw new Error("userCurrentUser must be used within a UserProvider");
+        throw new Error("userCurrentUser must be used within a CurrentUserProvider");
     }
     return context;
 };

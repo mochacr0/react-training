@@ -3,10 +3,12 @@ import { FieldArray, FormikValues, useFormikContext } from "formik";
 import { Occupation, OccupationTitle } from "../../models/profile.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 import PanelContainer from "./PanelContainer";
+import { useDisabledForm } from "../../shared/providers/DisabledFormProvider";
 
 const OccupationSection = () => {
     const formik = useFormikContext<FormikValues>();
     const { getFieldProps } = formik;
+    const { isFormDisabled } = useDisabledForm();
 
     return (
         <div className="panel mb-6">
@@ -95,7 +97,8 @@ const OccupationSection = () => {
                                 );
                             })}
                             <Button
-                                className="btn-primary rounded-md"
+                                className="btn-primary"
+                                disabled={isFormDisabled}
                                 onClick={() => {
                                     const newOccupation: Occupation = {
                                         title: OccupationTitle.UNEMPLOYED,

@@ -1,11 +1,11 @@
 import { RouteObject } from "react-router";
-import KYCForm from "../components/kyc/KYCForm";
-import PersonalInformationForm from "../components/profile/PersonalInformationForm";
+import RequiresAuth from "../components/auth/RequiresAuth";
 import Submissions from "../components/submission/Submissions";
+import { UserRole } from "../models/user.model";
+import EditKYC from "../pages/user/kyc/EditKYC";
+import EditPersonalInformation from "../pages/user/personal-information/EditPersonalInformation";
 import PersonalInformation from "../pages/user/personal-information/PersonalInformation";
 import User from "../pages/user/user";
-import RequiresAuth from "../components/auth/RequiresAuth";
-import { UserRole } from "../models/user.model";
 
 const userRoutes: RouteObject[] = [
     {
@@ -25,7 +25,7 @@ const userRoutes: RouteObject[] = [
                 path: ":clientId/pi/edit",
                 element: (
                     <RequiresAuth allowedRoles={[UserRole.CLIENT, UserRole.OFFICER]}>
-                        <PersonalInformationForm />
+                        <EditPersonalInformation />
                     </RequiresAuth>
                 ),
             },
@@ -33,7 +33,7 @@ const userRoutes: RouteObject[] = [
                 path: ":clientId/kyc/edit",
                 element: (
                     <RequiresAuth allowedRoles={[UserRole.CLIENT, UserRole.OFFICER]}>
-                        <KYCForm />
+                        <EditKYC />
                     </RequiresAuth>
                 ),
             },

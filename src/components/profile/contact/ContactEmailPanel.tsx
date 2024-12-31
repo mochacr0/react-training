@@ -3,10 +3,12 @@ import { FieldArray, FormikValues, useFormikContext } from "formik";
 import { ContactEmail, ContactPurposeType, PreferContactOption } from "../../../models/profile.model";
 import { getValidationProps } from "../../../shared/hooks/useFormValidationUtils";
 import PanelContainer from "../PanelContainer";
+import { useDisabledForm } from "../../../shared/providers/DisabledFormProvider";
 
 const ContactEmailPanel = () => {
     const formik = useFormikContext<FormikValues>();
     const { getFieldProps } = formik;
+    const { isFormDisabled } = useDisabledForm();
 
     return (
         <div className="panel">
@@ -96,7 +98,8 @@ const ContactEmailPanel = () => {
                                 );
                             })}
                             <Button
-                                className="btn-primary rounded-md"
+                                className="btn-primary"
+                                disabled={isFormDisabled}
                                 onClick={() => {
                                     const newEmail: ContactEmail = {
                                         address: "",

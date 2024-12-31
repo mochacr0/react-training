@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Asset, AssetType, IncomeType } from "../../models/kyc.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 import PanelContainer from "../profile/PanelContainer";
+import { useDisabledForm } from "../../shared/providers/DisabledFormProvider";
 
 const AssetSection = () => {
     const formik = useFormikContext<FormikValues>();
@@ -12,6 +13,7 @@ const AssetSection = () => {
         setFieldValue,
         getFieldProps,
     } = formik;
+    const { isFormDisabled } = useDisabledForm();
 
     useEffect(() => {
         const currentTotalAssetAmount = assets.reduce((currentTotalAmount: number, asset: Asset) => {
@@ -23,7 +25,7 @@ const AssetSection = () => {
     }, [setFieldValue, assets, totalAssetAmount]);
 
     return (
-        <div className="panel mb-6">
+        <div className="panel">
             <h4 className="mb-4 text-lg font-medium text-primary-900">Assets (B)</h4>
             <FieldArray
                 name="assets"
@@ -83,6 +85,7 @@ const AssetSection = () => {
                             })}
                             <Button
                                 className="btn-primary"
+                                disabled={isFormDisabled}
                                 onClick={() => {
                                     const newAsset: Asset = {
                                         type: AssetType.BOND,
@@ -91,7 +94,7 @@ const AssetSection = () => {
                                     arrayHelpers.push(newAsset);
                                 }}
                             >
-                                Add Income
+                                Add Asset
                             </Button>
                         </>
                     );

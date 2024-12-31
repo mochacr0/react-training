@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { LoginRequest } from "../../models/auth.model";
 import { UserRole } from "../../models/user.model";
 import { useLoginMutation } from "../../redux/features/auth.api.slice";
-import { useCurrentUserContext } from "../../shared/CurrentUserProvider";
+import { useCurrentUserContext } from "../../shared/providers/CurrentUserProvider";
 import { useFormValidationUtils } from "../../shared/hooks/useFormValidationUtils";
 import { shouldDisableButton } from "../../shared/utils";
 

@@ -13,7 +13,7 @@ const PanelContainer = ({ name, index, onRemoveItem, children }: PanelContainerP
                 <button
                     type="button"
                     onClick={() => onRemoveItem(index)}
-                    className="rounded-full p-1 text-red-500 transition-colors hover:bg-red-100 hover:text-red-700"
+                    className="rounded-full p-1 text-red-500 transition-colors hover:bg-red-100 hover:text-red-700 disabled:pointer-events-none disabled:opacity-50"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

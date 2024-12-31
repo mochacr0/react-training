@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../../components/Spinner";
 import { useGetPersonalInformationQuery } from "../../../redux/features/user.api.slice";
-import { useCurrentUserContext } from "../../../shared/CurrentUserProvider";
+import { useCurrentUserContext } from "../../../shared/providers/CurrentUserProvider";
 import { UserRole } from "../../../models/user.model";
 
 const DEFAULT_USER_AVATAR_URL = "/images/users/bonnie-green-2x.png";

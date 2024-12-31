@@ -1,7 +1,7 @@
 import { initFlowbite } from "flowbite";
 import { useEffect } from "react";
 import { Outlet } from "react-router";
-import { useCurrentUserContext } from "../../shared/CurrentUserProvider";
+import { useCurrentUserContext } from "../../shared/providers/CurrentUserProvider";
 import CustomizedToastContainer from "../CustomizedToastContainer";
 import Header from "./Header";
 import Sidebar from "./Sidebar";

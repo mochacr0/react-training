@@ -19,6 +19,9 @@ import ContactInformationSection from "./contact/ContactInformationSection";
 import IdentificationDocumentSection from "./IdentificationDocumentSection";
 import OccupationSection from "./OccupationSection";
 import { personalInformationSchema } from "./profile.schema";
+import { useDisabledForm } from "../../shared/providers/DisabledFormProvider";
+import { useCurrentUserContext } from "../../shared/providers/CurrentUserProvider";
+import { UserRole } from "../../models/user.model";
 
 const defaultInitialFormValues: PersonalInforDetailsFormValues = {
     contactInformation: {
@@ -49,8 +52,24 @@ const PersonalInformationForm = () => {
     const [initialFormValues, setInitialFormValues] =
         useState<PersonalInforDetailsFormValues>(defaultInitialFormValues);
     const [updatePersonalInfoDetails, updatePersonalInfoDetailsMutation] = useUpdatePersonalInfoDtailsMutation();
+    const { currentUser } = useCurrentUserContext();
+    const { isFormDisabled, updateIsFormDisabled } = useDisabledForm();
 
     const personalInfoDetailsDTO = data?.data;
+
+    useEffect(() => {
+        if (currentUser?.role === UserRole.OFFICER) {
+            updateIsFormDisabled(true);
+        }
+    }, [currentUser, updateIsFormDisabled]);
+
+    useEffect(() => {
+        if (!personalInfoDetailsDTO) {
+            return;
+        }
+        const formValues = toPersonalInfoDetailsFormValues(personalInfoDetailsDTO);
+        setInitialFormValues(formValues);
+    }, [personalInfoDetailsDTO]);
 
     async function handleSubmit(
         values: PersonalInforDetailsFormValues,
@@ -76,49 +95,39 @@ const PersonalInformationForm = () => {
         }
     }
 
-    useEffect(() => {
-        if (!personalInfoDetailsDTO) {
-            return;
-        }
-        const formValues = toPersonalInfoDetailsFormValues(personalInfoDetailsDTO);
-        setInitialFormValues(formValues);
-    }, [personalInfoDetailsDTO]);
-
+    if (isLoading) {
+        return <LoadingSpinner />;
+    }
     return (
-        <div className="mx-4 my-6 max-w-5xl rounded-lg bg-white p-6 shadow-md">
-            <h2 className="text-center text-2xl font-bold text-primary-900">Personal Information</h2>
-            {isLoading ? (
-                <LoadingSpinner />
-            ) : (
-                <Formik
-                    initialValues={initialFormValues}
-                    validationSchema={personalInformationSchema}
-                    onSubmit={handleSubmit}
-                    enableReinitialize={true}
-                >
-                    {(formik) => {
-                        return (
-                            <Form noValidate className="mt-6 space-y-6">
-                                <BasicInformationSection />
-                                <ContactInformationSection />
-                                <IdentificationDocumentSection />
-                                <OccupationSection />
-                                <div className="flex justify-end">
-                                    <Button
-                                        type="submit"
-                                        className="btn-primary rounded-md px-4 py-2"
-                                        isProcessing={updatePersonalInfoDetailsMutation.isLoading}
-                                        disabled={updatePersonalInfoDetailsMutation.isLoading || !formik.dirty}
-                                    >
-                                        Submit
-                                    </Button>
-                                </div>
-                            </Form>
-                        );
-                    }}
-                </Formik>
-            )}
-        </div>
+        <Formik
+            initialValues={initialFormValues}
+            validationSchema={personalInformationSchema}
+            onSubmit={handleSubmit}
+            enableReinitialize={true}
+        >
+            {(formik) => {
+                return (
+                    <Form noValidate>
+                        <fieldset className="mt-6 space-y-6" disabled={isFormDisabled}>
+                            <BasicInformationSection />
+                            <ContactInformationSection />
+                            <IdentificationDocumentSection />
+                            <OccupationSection />
+                            <div className="flex justify-end">
+                                <Button
+                                    type="submit"
+                                    className="btn-primary rounded-md px-4 py-2"
+                                    isProcessing={updatePersonalInfoDetailsMutation.isLoading}
+                                    disabled={updatePersonalInfoDetailsMutation.isLoading || !formik.dirty}
+                                >
+                                    Submit
+                                </Button>
+                            </div>
+                        </fieldset>
+                    </Form>
+                );
+            }}
+        </Formik>
     );
 };
 

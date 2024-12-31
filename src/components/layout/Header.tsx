@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useCurrentUserContext } from "../../shared/CurrentUserProvider";
+import { useCurrentUserContext } from "../../shared/providers/CurrentUserProvider";
 
 const Header = () => {
     const { currentUser } = useCurrentUserContext();

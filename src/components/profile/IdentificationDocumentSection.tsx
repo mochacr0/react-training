@@ -4,10 +4,12 @@ import { toast } from "react-toastify";
 import { IdentificationDocumentType } from "../../models/profile.model";
 import { getValidationProps } from "../../shared/hooks/useFormValidationUtils";
 import PanelContainer from "./PanelContainer";
+import { useDisabledForm } from "../../shared/providers/DisabledFormProvider";
 
 const IdentificationDocumentSection = () => {
     const formik = useFormikContext<FormikValues>();
     const { getFieldProps } = formik;
+    const { isFormDisabled } = useDisabledForm();
 
     function handleRemoveDocument(arrayHelpers: ArrayHelpers, index: number) {
         if (formik.values.identificationDocuments.length === 1) {
@@ -107,7 +109,8 @@ const IdentificationDocumentSection = () => {
                                 );
                             })}
                             <Button
-                                className="btn-primary rounded-md"
+                                className="btn-primary"
+                                disabled={isFormDisabled}
                                 onClick={() => {
                                     arrayHelpers.push({
                                         type: "passport",

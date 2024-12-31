@@ -1,6 +1,7 @@
 import { Button } from "flowbite-react";
 import { Form, Formik, FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import {
     FinancialStatusFormValues,
@@ -23,8 +24,9 @@ import { financialStatusSchema } from "./kyc.schema";
 import LiabilitySection from "./LiabilitySection";
 import NetWorthSection from "./NetWorthSection";
 import WealthSourceSection from "./WealthSourceSection";
-import { useCurrentUserContext } from "../../shared/CurrentUserProvider";
-import { useParams } from "react-router";
+import { useCurrentUserContext } from "../../shared/providers/CurrentUserProvider";
+import { useDisabledForm } from "../../shared/providers/DisabledFormProvider";
+import { UserRole } from "../../models/user.model";
 
 const defaultInitialFormValues: FinancialStatusFormValues = {
     basicInformation: {
@@ -66,8 +68,16 @@ const KYCForm = () => {
     const { data, isLoading } = useGetFinancialStatusQuery(clientId ?? "");
     const [initialFormValues, setInitialFormValues] = useState<FinancialStatusFormValues>(defaultInitialFormValues);
     const [updateFinancialStatus, updateFinancialStatusMutation] = useUpdateFinancialStatusMutation();
+    const { currentUser } = useCurrentUserContext();
+    const { isFormDisabled, updateIsFormDisabled } = useDisabledForm();
 
     const financialStatusDTO = data?.data;
+
+    useEffect(() => {
+        if (currentUser?.role === UserRole.OFFICER) {
+            updateIsFormDisabled(true);
+        }
+    }, [currentUser, updateIsFormDisabled]);
 
     useEffect(() => {
         if (!financialStatusDTO) {
@@ -104,48 +114,46 @@ const KYCForm = () => {
         }
     }
 
+    if (isLoading) {
+        return <LoadingSpinner />;
+    }
+
     return (
-        <div className="mx-4 my-6 max-w-5xl rounded-lg bg-white p-6 shadow-md">
-            <h2 className="mb-6 text-center text-2xl font-bold text-primary-900">Financial Status</h2>
-            {isLoading ? (
-                <LoadingSpinner />
-            ) : (
-                <Formik
-                    initialValues={initialFormValues}
-                    validationSchema={financialStatusSchema}
-                    onSubmit={handleSubmit}
-                    enableReinitialize
-                >
-                    {(formik) => {
-                        return (
-                            <Form noValidate className="space-y-6">
-                                <BasicInformationSection />
-                                <ContactInformationSection />
-                                <IdentificationDocumentSection />
-                                <OccupationSection />
-                                <IncomeSection />
-                                <AssetSection />
-                                <LiabilitySection />
-                                <WealthSourceSection />
-                                <NetWorthSection />
-                                <InvestmentSection />
-                                <div className="flex justify-end">
-                                    <Button
-                                        type="submit"
-                                        className="btn-primary rounded-md px-4 py-2"
-                                        isProcessing={updateFinancialStatusMutation.isLoading}
-                                        disabled={updateFinancialStatusMutation.isLoading || !formik.dirty}
-                                    >
-                                        Submit
-                                    </Button>
-                                </div>
-                                {/* <ErrorFocuser /> */}
-                            </Form>
-                        );
-                    }}
-                </Formik>
-            )}
-        </div>
+        <Formik
+            initialValues={initialFormValues}
+            validationSchema={financialStatusSchema}
+            onSubmit={handleSubmit}
+            enableReinitialize
+        >
+            {(formik) => {
+                return (
+                    <Form noValidate>
+                        <fieldset disabled={isFormDisabled} className="space-y-6">
+                            <BasicInformationSection />
+                            <ContactInformationSection />
+                            <IdentificationDocumentSection />
+                            <OccupationSection />
+                            <IncomeSection />
+                            <AssetSection />
+                            <LiabilitySection />
+                            <WealthSourceSection />
+                            <NetWorthSection />
+                            <InvestmentSection />
+                            <div className="flex justify-end">
+                                <Button
+                                    type="submit"
+                                    className="btn-primary rounded-md px-4 py-2"
+                                    isProcessing={updateFinancialStatusMutation.isLoading}
+                                    disabled={updateFinancialStatusMutation.isLoading || !formik.dirty}
+                                >
+                                    Submit
+                                </Button>
+                            </div>
+                        </fieldset>
+                    </Form>
+                );
+            }}
+        </Formik>
     );
 };
 

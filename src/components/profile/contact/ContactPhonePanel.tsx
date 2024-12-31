@@ -4,10 +4,12 @@ import { ContactPhone, ContactPurposeType, PreferContactOption } from "../../../
 import { getValidationProps } from "../../../shared/hooks/useFormValidationUtils";
 import { capitalize } from "../../../shared/utils";
 import PanelContainer from "../PanelContainer";
+import { useDisabledForm } from "../../../shared/providers/DisabledFormProvider";
 
 const ContactPhonePanel = () => {
     const formik = useFormikContext<FormikValues>();
     const { getFieldProps } = formik;
+    const { isFormDisabled } = useDisabledForm();
 
     return (
         <div className="panel">
@@ -99,7 +101,8 @@ const ContactPhonePanel = () => {
                                 );
                             })}
                             <Button
-                                className="btn-primary rounded-md"
+                                className="btn-primary"
+                                disabled={isFormDisabled}
                                 onClick={() => {
                                     const newPhone: ContactPhone = {
                                         number: "",

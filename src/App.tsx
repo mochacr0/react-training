@@ -1,6 +1,6 @@
 import { RouterProvider } from "react-router";
 import appRouter from "./routes/app.router";
-import { CurrentUserProvider } from "./shared/CurrentUserProvider";
+import { CurrentUserProvider } from "./shared/providers/CurrentUserProvider";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 
