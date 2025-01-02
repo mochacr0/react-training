@@ -1,8 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useCurrentUserContext } from "../../providers/CurrentUserProvider";
+import { useEffect } from "react";
+import { initFlowbite } from "flowbite";
 
 const Header = () => {
     const { currentUser } = useCurrentUserContext();
+    const location = useLocation();
+
+    useEffect(() => {
+        initFlowbite();
+    }, [location]);
 
     return (
         <nav className="fixed z-30 w-full border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">

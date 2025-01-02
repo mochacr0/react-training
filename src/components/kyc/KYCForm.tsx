@@ -27,6 +27,7 @@ import { useCurrentUserContext } from "../../providers/CurrentUserProvider";
 import { useDisabledForm } from "../../providers/DisabledFormProvider";
 import { UserRole } from "../../models/user.model";
 import ContactInformationSection from "../personal-information/ContactInformationSection";
+import ErrorFocuser from "../common/ErrorFocuser";
 
 const defaultInitialFormValues: FinancialStatusFormValues = {
     basicInformation: {
@@ -129,6 +130,7 @@ const KYCForm = () => {
                 return (
                     <Form noValidate>
                         <fieldset disabled={isFormDisabled} className="space-y-6">
+                            <ErrorFocuser />
                             <BasicInformationSection />
                             <ContactInformationSection />
                             <IdentificationDocumentSection />

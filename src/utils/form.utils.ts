@@ -1,13 +1,5 @@
 import { HasAmount } from "../models/kyc.model";
 
-export function isEmptyObject(obj: any): boolean {
-    return obj && typeof obj === "object" && Object.keys(obj).length === 0;
-}
-
-export function capitalize(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
-
 export function getTotalAmount(values: HasAmount[]) {
     return values.reduce((totalAmount: number, value: HasAmount) => {
         return totalAmount + value.amount;
@@ -21,4 +13,17 @@ export function handleAmountKeyDown(event: React.KeyboardEvent<HTMLInputElement>
     if (!allowedKeys.includes(event.key) && !digitKeyPattern.test(event.key)) {
         event.preventDefault();
     }
+}
+
+export function getFieldPaths(errors: object, currentPath: string = ""): string[] {
+    if (errors === null || typeof errors !== "object") {
+        return [currentPath];
+    }
+
+    return Object.entries(errors)
+        .flatMap(([key, value]) => {
+            const newPath = currentPath ? `${currentPath}.${key}` : key;
+            return getFieldPaths(value, newPath);
+        })
+        .filter(Boolean);
 }

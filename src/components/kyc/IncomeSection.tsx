@@ -5,7 +5,7 @@ import { Income, IncomeType } from "../../models/kyc.model";
 import PanelContainer from "../personal-information/PanelContainer";
 import { useEffect } from "react";
 import { useDisabledForm } from "../../providers/DisabledFormProvider";
-import { handleAmountKeyDown } from "../../utils/utils";
+import { handleAmountKeyDown } from "../../utils/form.utils";
 
 const IncomeSection = () => {
     const formik = useFormikContext<FormikValues>();

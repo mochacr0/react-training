@@ -1,17 +1,11 @@
-import { initFlowbite } from "flowbite";
-import { useEffect } from "react";
 import { Outlet } from "react-router";
 import { useCurrentUserContext } from "../../providers/CurrentUserProvider";
 import CustomizedToastContainer from "../common/CustomizedToastContainer";
+import Footer from "./Footer";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import Footer from "./Footer";
 
 const DefaultLayout = () => {
-    useEffect(() => {
-        initFlowbite();
-    }, []);
-
     const { currentUser } = useCurrentUserContext();
 
     return (

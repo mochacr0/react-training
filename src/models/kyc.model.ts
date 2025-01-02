@@ -1,4 +1,4 @@
-import { getTotalAmount } from "../utils/utils";
+import { getTotalAmount } from "../utils/form.utils";
 import { ApiResponse } from "./common.model";
 import {
     PersonalInforDetailsFormValues,

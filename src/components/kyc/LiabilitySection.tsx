@@ -5,7 +5,7 @@ import { Liability, LiabilityType } from "../../models/kyc.model";
 import { getValidationProps } from "../../hooks/useFormValidationUtils";
 import PanelContainer from "../personal-information/PanelContainer";
 import { useDisabledForm } from "../../providers/DisabledFormProvider";
-import { handleAmountKeyDown } from "../../utils/utils";
+import { handleAmountKeyDown } from "../../utils/form.utils";
 
 const LiabilitySection = () => {
     const formik = useFormikContext<FormikValues>();

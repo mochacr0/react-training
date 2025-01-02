@@ -22,6 +22,7 @@ import ContactInformationSection from "./ContactInformationSection";
 import IdentificationDocumentSection from "./IdentificationDocumentSection";
 import { personalInformationSchema } from "./profile.schema";
 import OccupationSection from "./OccupationSection";
+import ErrorFocuser from "../common/ErrorFocuser";
 
 const defaultInitialFormValues: PersonalInforDetailsFormValues = {
     contactInformation: {
@@ -109,6 +110,7 @@ const PersonalInformationForm = () => {
                 return (
                     <Form noValidate>
                         <fieldset className="mt-6 space-y-6" disabled={isFormDisabled}>
+                            <ErrorFocuser />
                             <BasicInformationSection />
                             <ContactInformationSection />
                             <IdentificationDocumentSection />
