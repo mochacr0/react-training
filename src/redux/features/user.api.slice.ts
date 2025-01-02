@@ -1,4 +1,4 @@
-import { GetPersonalInformationResponse } from "../../models/profile.model";
+import { GetPersonalInformationResponse } from "../../models/personal.information.model";
 import { baseAPISlice } from "./base.api.slice";
 
 const userAPISlice = baseAPISlice.injectEndpoints({

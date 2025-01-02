@@ -1,7 +1,7 @@
 import { Button, FileInput, Select, TextInput } from "flowbite-react";
 import { ArrayHelpers, FieldArray, FormikValues, useFormikContext } from "formik";
 import { toast } from "react-toastify";
-import { IdentificationDocumentType } from "../../models/profile.model";
+import { IdentificationDocumentType } from "../../models/personal.information.model";
 import { getValidationProps } from "../../hooks/useFormValidationUtils";
 import PanelContainer from "./PanelContainer";
 import { useDisabledForm } from "../../providers/DisabledFormProvider";

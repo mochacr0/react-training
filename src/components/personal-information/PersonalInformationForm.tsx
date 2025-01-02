@@ -8,19 +8,19 @@ import {
     PersonalInforDetailsFormValues,
     toPersonalInfoDetailsFormValues,
     UpdatePersonalInfoDetailsRequest,
-} from "../../models/profile.model";
+} from "../../models/personal.information.model";
 import { UserRole } from "../../models/user.model";
 import { useCurrentUserContext } from "../../providers/CurrentUserProvider";
 import { useDisabledForm } from "../../providers/DisabledFormProvider";
 import {
     useGetPersonalInfoDetailsQuery,
     useUpdatePersonalInfoDtailsMutation,
-} from "../../redux/features/profile.api.slice";
+} from "../../redux/features/personal.information.api.slice";
 import LoadingSpinner from "../common/LoadingSpinner";
 import BasicInformationSection from "./BasicInformationSection";
 import ContactInformationSection from "./ContactInformationSection";
 import IdentificationDocumentSection from "./IdentificationDocumentSection";
-import { personalInformationSchema } from "./profile.schema";
+import { personalInformationSchema } from "./personal.information.schema";
 import OccupationSection from "./OccupationSection";
 import ErrorFocuser from "../common/ErrorFocuser";
 

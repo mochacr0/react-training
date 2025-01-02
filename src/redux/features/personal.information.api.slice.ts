@@ -2,10 +2,10 @@ import {
     GetPersonalInfoDetailsResponse,
     UpdatePersonalInfoDetailsRequest,
     UpdatePersonalInfoDetailsResponse,
-} from "../../models/profile.model";
+} from "../../models/personal.information.model";
 import { baseAPISlice } from "./base.api.slice";
 
-const profileAPISlice = baseAPISlice.injectEndpoints({
+const personalInformationAPISlice = baseAPISlice.injectEndpoints({
     endpoints: (builder) => ({
         getPersonalInfoDetails: builder.query<GetPersonalInfoDetailsResponse, string>({
             query: (userId) => ({
@@ -27,4 +27,4 @@ const profileAPISlice = baseAPISlice.injectEndpoints({
     }),
 });
 
-export const { useGetPersonalInfoDetailsQuery, useUpdatePersonalInfoDtailsMutation } = profileAPISlice;
+export const { useGetPersonalInfoDetailsQuery, useUpdatePersonalInfoDtailsMutation } = personalInformationAPISlice;

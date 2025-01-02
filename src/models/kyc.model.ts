@@ -4,7 +4,7 @@ import {
     PersonalInforDetailsFormValues,
     PersonalInformationDTO,
     toPersonalInfoDetailsFormValues,
-} from "./profile.model";
+} from "./personal.information.model";
 
 export interface HasAmount {
     amount: number;
