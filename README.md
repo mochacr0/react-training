@@ -1,19 +1,48 @@
-# Getting Started with Simple KYC
+# React Intensive Assignment
 
-This project is a preconfigured skeleton for React Training Assigment only, feel free to contribute
+This project is an KYC application built as part of React Intensive Ad-hoc Training.
 
-- React v18
-- React Router v6
-- Tailwind
-- Flowbite and [Flowbite Admin Template](https://github.com/themesberg/flowbite-admin-dashboard/tree/main)
+## Technologies Used
 
-# Contribute
-This project is shared internally and customized for training purpose only, please open a pull request for your improvement if any
+-   React
+-   React Router
+-   Tailwind CSS
+-   Redux & RTK Query
+-   Flowbite
 
-# Disclaimer
+## Prerequisites
 
-This project is merely a preconfigured skeleton for the React Training Assignment; any copies of this repository are used at your own risk, and we disclaim all liability for any legal issues that arise from using it for your own company.
+-   Node.js (v16 or later)
+-   npm or yarn
+-   Git
 
-# How to start
-- npm run tailwind
-- npm start
+## Installation
+
+1. **Clone the repository:**
+
+```bash
+git clone https://github.com/mochacr0/react-training.git
+cd react-training
+```
+
+2. **Install dependencies:** Make sure you have Node.js installed. Then, install the project dependencies using npm or yarn:
+
+```bash
+npm install
+```
+or
+```base
+yarn install
+```
+
+3. **Start the development server:** Start the development server to run the application locally:
+
+```bash
+npm start
+```
+or
+```bash
+yarn start
+```
+
+The application will be available at http://localhost:3000
