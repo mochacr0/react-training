@@ -1,6 +1,6 @@
-# React Intensive Assignment
+# React Training Assignment - KYC Application
 
-This project is an KYC application built as part of React Intensive Ad-hoc Training.
+This project is an KYC application built as part of React Training.
 
 ## Technologies Used
 
