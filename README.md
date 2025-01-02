@@ -18,14 +18,14 @@ This project is an KYC application built as part of React Training.
 
 ## Installation
 
-1. **Clone the repository:**
+**1. Clone the repository:**
 
 ```bash
 git clone https://github.com/mochacr0/react-training.git
 cd react-training
 ```
 
-2. **Install dependencies:** Make sure you have Node.js installed. Then, install the project dependencies using npm or yarn:
+**2. Install dependencies:** Make sure you have Node.js installed. Then, install the project dependencies using npm or yarn:
 
 ```bash
 npm install
@@ -35,7 +35,7 @@ or
 yarn install
 ```
 
-3. **Start the development server:** Start the development server to run the application locally:
+**3. Start the development server:** Start the development server to run the application locally:
 
 ```bash
 npm start
@@ -46,6 +46,13 @@ yarn start
 ```
 
 The application will be available at http://localhost:3000
+
+**4. Login credentials:** For demonstration purposes, you can use the following credentials to login:
+
+|              | Client              | Officer              |
+| ------------ | ------------------- | -------------------- |
+| **Email**    | `client1@gmail.com` | `officer1@gmail.com` |
+| **Password** | `123123123a!2`      | `123123123a!2`       |
 
 ## Screenshots
 
