@@ -11,7 +11,7 @@ const LoginPage = () => {
                 <img src="/logo.png" className="mr-4 h-11" alt="Simple KYC Logo" />
                 <span>Simple KYC Authentication</span>
             </Link>
-            <div className="mb-8 w-full max-w-xl space-y-8 rounded-lg bg-white p-6 shadow dark:bg-gray-800 sm:p-8">
+            <div className="mb-8 w-full max-w-xl space-y-8 rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800 sm:p-8">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Sign in to platform</h2>
                 <LoginForm />
             </div>

@@ -117,7 +117,7 @@ const ResetPasswordForm = () => {
                 size="lg"
                 color="blue"
                 type="submit"
-                disabled={!formik.dirty || resetPasswordMutation.isLoading}
+                disabled={resetPasswordMutation.isLoading}
                 isProcessing={resetPasswordMutation.isLoading}
             >
                 Reset password
