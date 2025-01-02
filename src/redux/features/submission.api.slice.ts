@@ -9,7 +9,7 @@ const submissionAPISlice = baseAPISlice.injectEndpoints({
     endpoints: (builder) => ({
         getSubmissions: builder.query<GetSubmissionsResponse, void>({
             query: () => ({
-                url: "/bcc4-c243-42c5-8e82",
+                url: "2585-5809-412c-bc52",
                 method: "GET",
             }),
             providesTags: ["Submission"],

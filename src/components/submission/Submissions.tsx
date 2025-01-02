@@ -1,10 +1,11 @@
-import { Badge, Button, Modal } from "flowbite-react";
-import { useState } from "react";
+import { Badge, Button, Modal, Pagination } from "flowbite-react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { ProcessSubmissionRequest, ReviewAction, SubmitStatus } from "../../models/submission.model";
+import { ProcessSubmissionRequest, ReviewAction, SubmissionDTO, SubmitStatus } from "../../models/submission.model";
 import { useGetSubmissionsQuery, useProcessSubmissionMutation } from "../../redux/features/submission.api.slice";
 import LoadingSpinner from "../common/LoadingSpinner";
+import { usePaginationParams } from "../../hooks/usePaginationParams";
 
 const submitStatusColors = {
     [SubmitStatus.ACTIVE]: "green",
@@ -19,8 +20,24 @@ const Submissions = () => {
     const [action, setAction] = useState<ReviewAction>(ReviewAction.APPROVE);
     const { data, isLoading } = useGetSubmissionsQuery();
     const [processSubmission, processSubmissionMutation] = useProcessSubmissionMutation();
+    const { pageNumber, setPageNumber, pageSize } = usePaginationParams({ defaultPageSize: 4 });
+    const [totalPages, setTotalPages] = useState(0);
+    const [submissions, setSubmissions] = useState<SubmissionDTO[]>([]);
 
-    const submissions = data?.data;
+    useEffect(() => {
+        if (!data) {
+            return;
+        }
+
+        const currentSubmissions = data.data || [];
+        const totalPages = Math.ceil(currentSubmissions.length / pageSize);
+        const startIndex = (pageNumber - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        const paginatedSubmissions = currentSubmissions.slice(startIndex, endIndex);
+
+        setTotalPages(totalPages);
+        setSubmissions(paginatedSubmissions);
+    }, [data, pageNumber, pageSize]);
 
     function handleAction(clientId: string, action: ReviewAction) {
         setSelectedClientId(clientId);
@@ -66,74 +83,85 @@ const Submissions = () => {
             {isLoading || !submissions ? (
                 <LoadingSpinner />
             ) : (
-                <table className="min-w-full table-auto border-collapse space-y-6 text-left text-sm text-gray-500">
-                    <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700">
-                        <tr>
-                            <th scope="col" className="px-6 py-3">
-                                Name
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Status
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Date
-                            </th>
+                <div className="flex flex-col gap-4">
+                    <table className="min-w-full table-auto border-collapse space-y-6 text-left text-sm text-gray-500">
+                        <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700">
+                            <tr>
+                                <th scope="col" className="px-6 py-3">
+                                    Name
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Status
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Date
+                                </th>
 
-                            <th scope="col" className="px-6 py-3">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {submissions.map((submission, index) => {
-                            return (
-                                <tr
-                                    key={submission.clientId}
-                                    className="border-b bg-white hover:cursor-pointer hover:bg-gray-50"
-                                    onClick={() => navigate(`/user/${submission.clientId}/pi`)}
-                                >
-                                    <td className="px-6 py-4">{submission.clientName}</td>
-                                    <td className="px-6 py-4">
-                                        <Badge
-                                            color={submitStatusColors[submission.status]}
-                                            size="sm"
-                                            className="inline-flex rounded-full p-2 px-4"
-                                        >
-                                            {submission.status}
-                                        </Badge>
-                                    </td>
-                                    <td className="px-6 py-4">{submission.date}</td>
+                                <th scope="col" className="px-6 py-3">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {submissions.map((submission, index) => {
+                                return (
+                                    <tr
+                                        key={submission.clientId}
+                                        className="border-b bg-white hover:cursor-pointer hover:bg-gray-50"
+                                        onClick={() => navigate(`/user/${submission.clientId}/pi`)}
+                                    >
+                                        <td className="px-6 py-4">{submission.clientName}</td>
+                                        <td className="px-6 py-4">
+                                            <Badge
+                                                color={submitStatusColors[submission.status]}
+                                                size="sm"
+                                                className="inline-flex rounded-full p-2 px-4"
+                                            >
+                                                {submission.status}
+                                            </Badge>
+                                        </td>
+                                        <td className="px-6 py-4">{submission.date}</td>
 
-                                    <td className="px-6 py-4 text-right">
-                                        <div className="flex gap-2">
-                                            <Button
-                                                color="green"
-                                                size="sm"
-                                                className="mr-2"
-                                                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                                                    event.stopPropagation();
-                                                    handleAction(submission.clientId, ReviewAction.APPROVE);
-                                                }}
-                                            >
-                                                Approve
-                                            </Button>
-                                            <Button
-                                                color="red"
-                                                size="sm"
-                                                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                                                    event.stopPropagation();
-                                                    handleAction(submission.clientId, ReviewAction.REJECT);
-                                                }}
-                                            >
-                                                Reject
-                                            </Button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                                        <td className="px-6 py-4 text-right">
+                                            <div className="flex gap-2">
+                                                <Button
+                                                    color="green"
+                                                    size="sm"
+                                                    className="mr-2"
+                                                    onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                                                        event.stopPropagation();
+                                                        handleAction(submission.clientId, ReviewAction.APPROVE);
+                                                    }}
+                                                >
+                                                    Approve
+                                                </Button>
+                                                <Button
+                                                    color="red"
+                                                    size="sm"
+                                                    onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                                                        event.stopPropagation();
+                                                        handleAction(submission.clientId, ReviewAction.REJECT);
+                                                    }}
+                                                >
+                                                    Reject
+                                                </Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                    <div className="flex justify-end">
+                        <Pagination
+                            currentPage={pageNumber}
+                            totalPages={totalPages}
+                            onPageChange={(page) => {
+                                setPageNumber(page);
+                            }}
+                        />
+                    </div>
+                </div>
             )}
             <Modal show={openModal} size="lg" onClose={() => setOpenModal(false)} dismissible={true}>
                 <Modal.Header>Confirm Submission Action</Modal.Header>
