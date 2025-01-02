@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { ApiResponse } from "./common.model";
 
 export type BasicInfomation = {
@@ -177,12 +178,14 @@ export function toPhonesFormValues(phoneDTOs: ContactPhoneDTO[]): ContactPhone[]
 }
 
 export function toBasicInformationFormValue(basicInfoDTO: BasicInformationDTO): BasicInfomation {
+    const age = dayjs().diff(dayjs(basicInfoDTO.dateOfBirth), "year");
+
     return {
         firstName: basicInfoDTO.firstName,
         lastName: basicInfoDTO.lastName,
         middleName: basicInfoDTO.middleName,
         dateOfBirth: basicInfoDTO.dateOfBirth,
-        age: "",
+        age: age.toString(),
     };
 }
 

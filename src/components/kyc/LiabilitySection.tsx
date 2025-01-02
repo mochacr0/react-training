@@ -5,6 +5,7 @@ import { Liability, LiabilityType } from "../../models/kyc.model";
 import { getValidationProps } from "../../hooks/useFormValidationUtils";
 import PanelContainer from "../personal-information/PanelContainer";
 import { useDisabledForm } from "../../providers/DisabledFormProvider";
+import { handleAmountKeyDown } from "../../utils/utils";
 
 const LiabilitySection = () => {
     const formik = useFormikContext<FormikValues>();
@@ -81,6 +82,7 @@ const LiabilitySection = () => {
                                                     min={0}
                                                     {...getFieldProps(`liabilities.${index}.amount`)}
                                                     {...getValidationProps(`liabilities.${index}.amount`, formik)}
+                                                    onKeyDown={handleAmountKeyDown}
                                                 />
                                             </div>
                                         </div>

@@ -13,3 +13,12 @@ export function getTotalAmount(values: HasAmount[]) {
         return totalAmount + value.amount;
     }, 0);
 }
+
+export function handleAmountKeyDown(event: React.KeyboardEvent<HTMLInputElement>): void {
+    const allowedKeys = ["Backspace", "ArrowLeft", "ArrowRight", "Delete", "Tab", "Enter"];
+    const digitKeyPattern = /^\d$/;
+
+    if (!allowedKeys.includes(event.key) && !digitKeyPattern.test(event.key)) {
+        event.preventDefault();
+    }
+}

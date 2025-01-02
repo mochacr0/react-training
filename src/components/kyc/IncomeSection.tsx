@@ -5,6 +5,7 @@ import { Income, IncomeType } from "../../models/kyc.model";
 import PanelContainer from "../personal-information/PanelContainer";
 import { useEffect } from "react";
 import { useDisabledForm } from "../../providers/DisabledFormProvider";
+import { handleAmountKeyDown } from "../../utils/utils";
 
 const IncomeSection = () => {
     const formik = useFormikContext<FormikValues>();
@@ -77,6 +78,7 @@ const IncomeSection = () => {
                                                     min={0}
                                                     {...getFieldProps(`incomes.${index}.amount`)}
                                                     {...getValidationProps(`incomes.${index}.amount`, formik)}
+                                                    onKeyDown={handleAmountKeyDown}
                                                 />
                                             </div>
                                         </div>

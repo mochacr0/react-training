@@ -5,6 +5,7 @@ import { WealthSource, WealthSourceType } from "../../models/kyc.model";
 import { getValidationProps } from "../../hooks/useFormValidationUtils";
 import PanelContainer from "../personal-information/PanelContainer";
 import { useDisabledForm } from "../../providers/DisabledFormProvider";
+import { handleAmountKeyDown } from "../../utils/utils";
 
 const WealthSourceSection = () => {
     const formik = useFormikContext<FormikValues>();
@@ -84,6 +85,7 @@ const WealthSourceSection = () => {
                                                     min={0}
                                                     {...getFieldProps(`wealthSources.${index}.amount`)}
                                                     {...getValidationProps(`wealthSources.${index}.amount`, formik)}
+                                                    onKeyDown={handleAmountKeyDown}
                                                 />
                                             </div>
                                         </div>
