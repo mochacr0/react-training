@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { UserRole } from "../../models/user.model";
 import { useCurrentUserContext } from "../../providers/CurrentUserProvider";
+import { TiDocumentText } from "react-icons/ti";
+import { FaRegUser } from "react-icons/fa";
 
 interface MenuItem {
     name: string;
     url: string;
-    icon: string;
+    icon: React.ReactElement;
     roles: UserRole[];
 }
 
@@ -13,14 +15,19 @@ const menuItems: MenuItem[] = [
     {
         name: "My Profile",
         url: "/user/1/pi",
-        icon: "/icons/settings.svg",
+        icon: <FaRegUser />,
         roles: [UserRole.CLIENT],
     },
-
+    {
+        name: "My Submissions",
+        url: "/user/1/submissions",
+        icon: <TiDocumentText />,
+        roles: [UserRole.CLIENT],
+    },
     {
         name: "Submit Review",
         url: "/user/submit-review",
-        icon: "/icons/settings.svg",
+        icon: <TiDocumentText />,
         roles: [UserRole.OFFICER],
     },
 ];
@@ -48,7 +55,7 @@ const Sidebar = () => {
                                             to={item.url}
                                             className="group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
                                         >
-                                            <img className="mr-3 h-8" src={item.icon} alt="menu item" />
+                                            {item.icon}
                                             <span className="ml-3" sidebar-toggle-item="">
                                                 {item.name}
                                             </span>

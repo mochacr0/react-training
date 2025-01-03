@@ -9,10 +9,17 @@ const submissionAPISlice = baseAPISlice.injectEndpoints({
     endpoints: (builder) => ({
         getSubmissions: builder.query<GetSubmissionsResponse, void>({
             query: () => ({
-                url: "2585-5809-412c-bc52",
+                url: "0b96-41b7-46f8-8658",
                 method: "GET",
             }),
             providesTags: ["Submission"],
+        }),
+        getSubmissionsByClientId: builder.query<GetSubmissionsResponse, string>({
+            query: (clientId) => ({
+                url: `/05a6-d293-4234-9e3c`,
+                method: "GET",
+            }),
+            providesTags: ["MySubmission"],
         }),
         processSubmission: builder.mutation<ProcessSubmissionResponse, ProcessSubmissionRequest>({
             query: ({ clientId, body }) => ({
@@ -25,4 +32,5 @@ const submissionAPISlice = baseAPISlice.injectEndpoints({
     }),
 });
 
-export const { useGetSubmissionsQuery, useProcessSubmissionMutation } = submissionAPISlice;
+export const { useGetSubmissionsQuery, useProcessSubmissionMutation, useGetSubmissionsByClientIdQuery } =
+    submissionAPISlice;

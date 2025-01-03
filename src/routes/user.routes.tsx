@@ -1,10 +1,11 @@
 import { RouteObject } from "react-router";
 import RequiresAuth from "../components/common/RequiresAuth";
-import Submissions from "../components/submission/Submissions";
+import UserSubmissionsPage from "../pages/submissions/UserSubmissionsPage";
 import { UserRole } from "../models/user.model";
 import EditKYC from "../pages/kyc/EditKYC";
-import PersonalInformation from "../pages/personal-information/PersonalInformation";
 import EditPersonalInformation from "../pages/personal-information/EditPersonalInformation";
+import PersonalInformation from "../pages/personal-information/PersonalInformation";
+import MySubmissionsPage from "../pages/submissions/MySubmissions";
 
 const userRoutes: RouteObject[] = [
     {
@@ -35,13 +36,21 @@ const userRoutes: RouteObject[] = [
                     </RequiresAuth>
                 ),
             },
+            {
+                path: ":clientId/submissions",
+                element: (
+                    <RequiresAuth allowedRoles={[UserRole.CLIENT, UserRole.OFFICER]}>
+                        <MySubmissionsPage />
+                    </RequiresAuth>
+                ),
+            },
 
             // Officer Routes
             {
                 path: "submit-review",
                 element: (
                     <RequiresAuth allowedRoles={[UserRole.OFFICER]}>
-                        <Submissions />
+                        <UserSubmissionsPage />
                     </RequiresAuth>
                 ),
             },
